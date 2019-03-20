@@ -1,0 +1,236 @@
+<template>
+    <div>
+        <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+
+          <div class="modal-header">
+            <slot name="header">
+              
+            </slot>
+          </div>
+           <h3> {{this.$route.query.title}} </h3>
+           <h4>{{this.$route.query.count}}</h4>
+          <div class="modal-body">
+            <slot name="body">
+               <GChart
+                v-if="!isEmpty"
+                type="PieChart"
+                :data="AgeData"
+                :options="AgeOptions"
+            />
+
+            <GChart
+                v-if="!isEmpty"
+                type="PieChart"
+                :data="SexData"
+                :options="SexOptions"
+            />
+
+             <GChart
+                v-if="!isEmpty"
+                type="PieChart"
+                :data="SexData"
+                :options="AreaOptions"
+            />
+             
+            <div>
+              
+            </div>
+            </slot>
+          </div>
+
+          <div class="modal-footer">
+            <slot name="footer">
+              <span class="black--text"><b><v-btn @click="close">종료하기</v-btn></b></span>
+              <router-link to="/"><span class="black--text"><b><v-btn>공감하기</v-btn></b></span></router-link>
+              <router-link :to="{name : 'chatting', query : {title : this.$route.query.title}}"><span class="black--text"><b><v-btn>대화방 참여</v-btn></b></span></router-link> 
+              <a v-bind:href="this.$route.query.link"><span class="black--text"><b><v-btn>원문 보기</v-btn></b></span></a> 
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+       
+      
+        
+    </div>
+</template>
+
+<script>
+import { GChart } from 'vue-google-charts'
+import {User} from '../api'
+import { eventBus } from '../main';
+import {Token} from '../api';
+import axios from 'axios'
+export default {
+
+    components : {
+        GChart
+    },
+     data () {
+        return {
+                    
+                    isEmpty : true,
+                    userInfo : [],
+                    AgeData: [
+                      ['age','공감수'],
+                      ['10대',0],
+                      ['20대',0],
+                      ['30대',0],
+                      ['40대',0],
+                      ['50대',0]
+                    ],
+                    SexData : [
+                      ['sex','공감수'],
+                      ['남자',0],
+                      ['여자',0],
+                    ],
+                    AgeOptions : {
+                        title : '연령별 분포'
+                    },
+                    SexOptions : {
+                        title : '성별 분포'
+                    },
+                    AreaOptions : {
+                         title : '지역별 분포'
+                    }
+        }
+    },
+    created() {
+      this.getUsers()
+    
+    },
+
+    methods : {
+        getUsers () {
+            User.fetch()
+                .then((res)=> {
+                  
+                  this.isEmpty = false;
+                  this.userInfo.push(res.data)
+                  
+                })
+                .catch(() => {
+                  //this.$store.dispatch('logout')
+                  Token.getNewToken()
+                       .then(res => {
+                          if(res.status === 200){
+                            const newToken = res.data.token
+                            localStorage.removeItem('access-token')
+                            localStorage.setItem('access-token',newToken);
+                            const accessToken = localStorage.getItem('access-token');
+                            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+                            this.$router.replace({name : 'home'})
+                          }
+                       })
+
+                })
+         
+               
+        
+        },
+        close () {
+          eventBus.$emit('close')
+        }      
+    },
+    watch: {
+     
+      isEmpty: function() {
+          
+         this.userInfo.forEach(element => {
+           for(let key in element){
+              this.AgeData.forEach(data => {
+                if(data[0] === element[key].age){
+                  data[1]++
+                }
+              })
+              this.SexData.forEach(data => {
+                if(data[0] === element[key].sex){
+                  data[1]++
+                }
+              })
+           }
+        })
+    }
+    
+  }
+}
+</script>
+<style>
+
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 800px;
+  height: 900px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.modal-body {
+  margin: 20px 0;
+  font-family: 'Do Hyeon', sans-serif;
+}
+
+.modal-default-button {
+  float: right;
+}
+
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+a{
+  color : black;
+  text-decoration: none;
+  font-family: 'Do Hyeon', sans-serif;
+}
+</style>
