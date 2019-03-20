@@ -60,43 +60,18 @@ module.exports = class users {
         const values = [String(email)];
         db.execute(insert,values); 
     }
-    
-    
-    
-    //수정
-    
 
-    static updateArea(area,email){
-        const insert = 'UPDATE test123.users SET Area = ? WHERE Email in (?)';
-        const values = [String(area),String(email)];
-        db.execute(insert,values); 
+    static addHistory(email,petitionID){
+        const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime) VALUES(?,?,?,NOW())'
+        const values = [null,String(email),Number(petitionID)]
+        db.execute(insert,values);
     }
 
-    static updateAge(age,email){
-        const insert = 'UPDATE test123.users SET Age = ? WHERE Email in (?)';
-        const values = [String(age),String(email)];
-        db.execute(insert,values); 
+    static findHistory(email) {
+        const find = 'SELECT Email,DocumentID,ReadingPageTime FROM test123.history WHERE Email in (?)'
+        const values = [String(email)];
+        return db.execute(find,values);
     }
-
-    static updateSex(sex,email){
-        const insert = 'UPDATE test123.users SET Sex = ? WHERE Email in (?)';
-        const values = [String(sex),String(email)];
-        db.execute(insert,values); 
-    }
-
-    static updateNickname(nickname,email){
-        const insert = 'UPDATE test123.users SET Nickname = ? WHERE Email in (?)';
-        const values = [String(nickname),String(email)];
-        db.execute(insert,values); 
-    }
-
-    //탈퇴
-   
-
-
-
     
-
-
 
 }

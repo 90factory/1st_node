@@ -10,6 +10,7 @@
               
             </slot>
           </div>
+        
            <h3> {{this.$route.query.title}} </h3>
            <h4>{{this.$route.query.count}}</h4>
           <div class="modal-body">
@@ -44,7 +45,7 @@
           <div class="modal-footer">
             <slot name="footer">
               <span class="black--text"><b><v-btn @click="close">종료하기</v-btn></b></span>
-              <router-link to="/"><span class="black--text"><b><v-btn>공감하기</v-btn></b></span></router-link>
+              <router-link to="/"><span class="black--text"><b><v-btn @click="recommend">공감하기</v-btn></b></span></router-link>
               <router-link :to="{name : 'chatting', query : {title : this.$route.query.title}}"><span class="black--text"><b><v-btn>대화방 참여</v-btn></b></span></router-link> 
               <a v-bind:href="this.$route.query.link"><span class="black--text"><b><v-btn>원문 보기</v-btn></b></span></a> 
             </slot>
@@ -62,6 +63,7 @@
 <script>
 import { GChart } from 'vue-google-charts'
 import {User} from '../api'
+import {UserInfo} from '../api'
 import { eventBus } from '../main';
 import {Token} from '../api';
 import axios from 'axios'
@@ -111,7 +113,7 @@ export default {
                   
                   this.isEmpty = false;
                   this.userInfo.push(res.data)
-                  
+                  this.addHistory()
                 })
                 .catch(() => {
                   //this.$store.dispatch('logout')
@@ -128,12 +130,15 @@ export default {
                        })
 
                 })
-         
-               
-        
         },
         close () {
           eventBus.$emit('close')
+        },
+        addHistory(){
+          UserInfo.addHistory(this.$route.query.id)
+        },
+        recommend(){
+          //Petitions.recommend(this.$route.query.id)
         }      
     },
     watch: {

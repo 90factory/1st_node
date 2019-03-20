@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 
+//const DOMAIN = 'http://localhost:3000'
 const DOMAIN = 'http://192.168.1.4:3000'
 const api = (method, url, data) => {
     return axios({
@@ -14,12 +15,12 @@ const api = (method, url, data) => {
 export const User = {
 
     fetch () {
-        return axios.get('http://192.168.1.4:3000/detail')
+        return axios.get(DOMAIN+'/detail')
     }
 }
 export const Register = {
     fetch (email,password,sex,age,area,nickname) {
-        return axios.post('http://192.168.1.4:3000/register', {
+        return axios.post(DOMAIN+'/register', {
             email : email,
             password : password,
             sex : sex,
@@ -31,7 +32,7 @@ export const Register = {
 }
 export const Login = {
     fetch (loginObj) {
-        return axios.post('http://192.168.1.4:3000/login', {
+        return axios.post(DOMAIN+'/login', {
             email : loginObj.email,
             password : loginObj.password
            })
@@ -40,7 +41,7 @@ export const Login = {
 
 export const UserInfo = {
     fetch (email,nickname,Sex,Area,Age,password) {
-        return axios.post('http://192.168.1.4:3000/revise', {
+        return axios.post(DOMAIN+'/revise', {
             email : email,
             nickname : nickname,
             sex : Sex,
@@ -50,15 +51,27 @@ export const UserInfo = {
         })
     },
     revise (email,password) {
-        return axios.post('http://192.168.1.4:3000/password',{
+        return axios.post(DOMAIN+'/password',{
             email : email,
             password : password
         })
     },
     delete(email,password) {
-        return axios.post('http:///192.168.1.4:3000/delete',{
+        return axios.post(DOMAIN+'/delete',{
             email : email,
             password : password
+        })
+    },
+    addHistory(petitionID) {
+
+        return axios.post(DOMAIN+'/history',{
+            petitionID : petitionID,
+            email : localStorage.getItem('email')
+        })
+    },
+    getHistory() {
+        return axios.get(DOMAIN+'/history',{
+           params:{ email : localStorage.getItem('email')}
         })
     }
 }
@@ -68,7 +81,8 @@ export const Petitions = {
     fetch () {
         
         return api('get','/petitions')
-    }
+    },
+  
  
 }
 
@@ -88,6 +102,6 @@ export const Token = {
     getNewToken () {
         const refreshToken = localStorage.getItem('refresh-token');
         axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`
-        return axios.get('http://192.168.1.4:3000/refreshtoken')
+        return axios.get(DOMAIN+'/refreshtoken')
     }
 }
