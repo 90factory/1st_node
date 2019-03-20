@@ -14,11 +14,11 @@ const request = require('request');
         }, (error,response, body)=>{
             const PetitionData = body
          
-            res.status(200).json(PetitionData)
+            //res.status(200).json(PetitionData)
         })
-        //let data = [ ] 
-        //data.push(SearchResult)
-        //res.status(200).json(data)
+        let data = [ ] 
+        data.push(SearchResult)
+        res.status(200).json(data)
     }
     getSearch(req,res){
         request.get({
@@ -67,6 +67,11 @@ const request = require('request');
 
                   })
                   .catch(()=>{})
+    }
+    postRecommend(req,res) {
+        const petitionId = req.body.petitionID
+        const userEmail = req.body.email
+        usersQuery.postRecommend(userEmail,petitionId)
     }
 
 }

@@ -15,9 +15,12 @@ module.exports = class users {
         return db.execute(find,values);
     }
 
-    static findInfo() {
-        const find = 'SELECT Sex,Age,Area FROM test123.users'
-        return db.execute(find);
+    static findInfo(emailList) {
+
+        var email = new Array(emailList.length).fill('?').join(',');
+        const find =`SELECT Sex,Age,Area FROM test123.users WHERE Email IN (${email})`
+        const values = emailList
+        return db.execute(find,values);
     }
 
     static singUpAdd(area,age,sex,nickname,email){
@@ -72,6 +75,16 @@ module.exports = class users {
         const values = [String(email)];
         return db.execute(find,values);
     }
-    
 
+    static postRecommend(email,petitionID) {
+        const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime,VotingStatus) VALUES(?,?,?,NOW(),?)'
+        const values = [null,String(email),Number(petitionID),Number(1)]
+        db.execute(insert,values);
+    }
+    
+    static getRecommend(petitionID) {
+        const find = 'SELECT Email,VotingStatus FROM test123.history WHERE DocumentID in (?)'
+        const values = [Number(petitionID)]
+        return db.execute(find,values);
+    }
 }

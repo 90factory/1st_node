@@ -1,4 +1,3 @@
-const usersInfo = require('../model/test');
 const usersQuery = require("../model/usersQuery");
 const crypto = require("crypto");
 
@@ -8,7 +7,52 @@ module.exports = class Member {
 
   }
   getUserInfo(req,res){
-    res.status(200).json(usersInfo)
+    const petitionID = req.query.petitionID;
+    usersQuery.getRecommend(petitionID)
+              .then((data)=>{
+                
+                let temp = []
+                data[0].forEach(recommend => {
+                   if(recommend.VotingStatus === 1){
+                      temp.push(recommend.Email)
+                   }
+                })
+                let emailList = temp.reduce((a,b) => {
+                    if( a.indexOf(b) < 0){
+                      a.push(b)
+                    }
+                    return a
+                },[])
+                
+                  return emailList
+              })
+              .then(emailList => {
+               
+                usersQuery.findInfo(emailList)
+                          .then(data =>{
+                            let userData = []
+                            data[0].forEach(info =>{
+                              let data = {}
+                              data.sex = info.Sex
+                              data.age = info.Age
+                              data.area = info.Area
+                              userData.push(data)
+                            })
+                            return userData
+                          })
+                          .then(data => {
+                            res.status(200).json(data)
+                          })
+                
+                
+              })
+              
+              
+            
+          
+    
+
+    //res.status(200).json(usersInfo)
   }
 
   updateUserInfo(req,res){

@@ -14,8 +14,8 @@ const api = (method, url, data) => {
 
 export const User = {
 
-    fetch () {
-        return axios.get(DOMAIN+'/detail')
+    fetch (petitionID) {
+        return axios.get(DOMAIN+'/detail',{params : { petitionID : petitionID}})
     }
 }
 export const Register = {
@@ -82,7 +82,13 @@ export const Petitions = {
         
         return api('get','/petitions')
     },
-  
+    postRecommend(petitionID) {
+
+        return axios.post(DOMAIN+'/recommend',{
+            petitionID : petitionID,
+            email : localStorage.getItem('email')
+        })
+    }
  
 }
 

@@ -10,7 +10,7 @@
               
             </slot>
           </div>
-        
+          
            <h3> {{this.$route.query.title}} </h3>
            <h4>{{this.$route.query.count}}</h4>
           <div class="modal-body">
@@ -21,7 +21,6 @@
                 :data="AgeData"
                 :options="AgeOptions"
             />
-
             <GChart
                 v-if="!isEmpty"
                 type="PieChart"
@@ -35,7 +34,7 @@
                 :data="SexData"
                 :options="AreaOptions"
             />
-             
+          
             <div>
               
             </div>
@@ -66,6 +65,7 @@ import {User} from '../api'
 import {UserInfo} from '../api'
 import { eventBus } from '../main';
 import {Token} from '../api';
+import {Petitions} from '../api'
 import axios from 'axios'
 export default {
 
@@ -76,7 +76,7 @@ export default {
         return {
                     
                     isEmpty : true,
-                    userInfo : [],
+                    userInfo : '',
                     AgeData: [
                       ['age','공감수'],
                       ['10대',0],
@@ -108,11 +108,11 @@ export default {
 
     methods : {
         getUsers () {
-            User.fetch()
+            User.fetch(this.$route.query.id)
                 .then((res)=> {
                   
                   this.isEmpty = false;
-                  this.userInfo.push(res.data)
+                  this.userInfo = res.data;
                   this.addHistory()
                 })
                 .catch(() => {
@@ -138,7 +138,7 @@ export default {
           UserInfo.addHistory(this.$route.query.id)
         },
         recommend(){
-          //Petitions.recommend(this.$route.query.id)
+          Petitions.postRecommend(this.$route.query.id)
         }      
     },
     watch: {
@@ -146,18 +146,18 @@ export default {
       isEmpty: function() {
           
          this.userInfo.forEach(element => {
-           for(let key in element){
+           
               this.AgeData.forEach(data => {
-                if(data[0] === element[key].age){
+                if(data[0] === element.age){
                   data[1]++
                 }
               })
               this.SexData.forEach(data => {
-                if(data[0] === element[key].sex){
+                if(data[0] === element.sex){
                   data[1]++
                 }
               })
-           }
+           
         })
     }
     

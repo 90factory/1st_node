@@ -22,6 +22,6 @@ router.post('/delete',passport.authenticate('jwt',{session:false}),UserControlle
 router.get('/refreshtoken',passport.authenticate('jwt',{session:false}),AuthController.getNewToken)
 router.post('/history',PetitionController.postHistory)
 router.get('/history',PetitionController.getHistory)
-
+router.post('/recommend',PetitionController.postRecommend)
 
 module.exports = router;
