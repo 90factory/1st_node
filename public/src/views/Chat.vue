@@ -35,7 +35,7 @@ export default {
             user: localStorage.getItem('Nickname'),
             message : '',
             messages : [],
-            socket : io('192.168.1.4:3000'),
+            socket : io('http://192.168.1.4:3000'),
             height : '',
             offsetTop : 400
         }
