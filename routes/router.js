@@ -20,8 +20,8 @@ router.post('/register',UserController.registerUser)
 router.post('/password',passport.authenticate('jwt',{session:false}),UserController.updatePassword)
 router.post('/delete',passport.authenticate('jwt',{session:false}),UserController.deleteUser)
 router.get('/refreshtoken',passport.authenticate('jwt',{session:false}),AuthController.getNewToken)
-router.post('/history',PetitionController.postHistory)
-router.get('/history',PetitionController.getHistory)
-router.post('/recommend',PetitionController.postRecommend)
+router.post('/history',passport.authenticate('jwt',{session:false}),PetitionController.postHistory)
+router.get('/history',passport.authenticate('jwt',{session:false}),PetitionController.getHistory)
+router.post('/recommend',passport.authenticate('jwt',{session:false}),PetitionController.postRecommend)
 
 module.exports = router;
