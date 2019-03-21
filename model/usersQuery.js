@@ -67,7 +67,7 @@ module.exports = class users {
     static addHistory(email,petitionID){
         const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime) VALUES(?,?,?,NOW())'
         const values = [null,String(email),Number(petitionID)]
-        db.execute(insert,values);
+        return db.execute(insert,values);
     }
 
     static findHistory(email) {

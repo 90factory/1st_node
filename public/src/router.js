@@ -54,7 +54,7 @@ export default new Router({
       name: 'searchresult',
       beforeEnter : onlyAuthUser,
       component: SearchResult,
-      children : [{path: 'result/:title',name:'result',beforeEnter : onlyAuthUser, component : Detail}]
+      children : [{path: 'result',name:'result',beforeEnter : onlyAuthUser, component : Detail}]
     },
     {
       path : '/history',

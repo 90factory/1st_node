@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 
-//const DOMAIN = 'http://localhost:3000'
-const DOMAIN = 'http://192.168.1.4:3000'
+const DOMAIN = 'http://localhost:3000'
+//const DOMAIN = 'http://192.168.1.4:3000'
 const api = (method, url, data) => {
     return axios({
         method,
@@ -64,10 +64,12 @@ export const UserInfo = {
     },
     addHistory(petitionID) {
 
-        return axios.post(DOMAIN+'/history',{
+        return axios.post(
+            DOMAIN+'/history',
+            {
             petitionID : petitionID,
             email : localStorage.getItem('email')
-        })
+            })
     },
     getHistory() {
         return axios.get(DOMAIN+'/history',{

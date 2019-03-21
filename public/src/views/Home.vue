@@ -76,6 +76,7 @@
         let self = this
         eventBus.$on('close', () => {
               self.showModal = !self.showModal
+             
           })
     },
     methods : {
@@ -95,7 +96,7 @@
         },
         openModal () {
           this.showModal = true;
-          
+       
         }
     },
     watch : {

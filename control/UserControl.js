@@ -8,15 +8,22 @@ module.exports = class Member {
   }
   getUserInfo(req,res){
     const petitionID = req.query.petitionID;
+    console.log(petitionID)
     usersQuery.getRecommend(petitionID)
               .then((data)=>{
-                
                 let temp = []
                 data[0].forEach(recommend => {
                    if(recommend.VotingStatus === 1){
                       temp.push(recommend.Email)
                    }
+                   
                 })
+
+                if(temp.length === 0){
+                  res.status(200).json({message : "No Recommend"})
+                  return 0;
+                }
+
                 let emailList = temp.reduce((a,b) => {
                     if( a.indexOf(b) < 0){
                       a.push(b)
@@ -24,11 +31,7 @@ module.exports = class Member {
                     return a
                 },[])
                 
-                  return emailList
-              })
-              .then(emailList => {
-               
-                usersQuery.findInfo(emailList)
+                  usersQuery.findInfo(emailList)
                           .then(data =>{
                             let userData = []
                             data[0].forEach(info =>{
@@ -38,21 +41,15 @@ module.exports = class Member {
                               data.area = info.Area
                               userData.push(data)
                             })
-                            return userData
+                            console.log(userData)
+                            res.status(200).json(userData)
                           })
-                          .then(data => {
-                            res.status(200).json(data)
-                          })
-                
-                
+                          .catch(() =>{res.status(401).json({})})
               })
-              
-              
-            
+              .catch(()=>{
+                res.status(401).json({message :"No Data"})
+              })
           
-    
-
-    //res.status(200).json(usersInfo)
   }
 
   updateUserInfo(req,res){

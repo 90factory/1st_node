@@ -5,7 +5,7 @@
                 <h1>검색결과</h1>
                 
                  <v-list v-for="(result,index) in foundData" :key="index">
-                    <router-link :to="{ name : 'result', query: {title : result.제목,link : result.링크, count : result.참여인원}}">
+                    <router-link :to="{ name : 'result', query: {title : result.제목,link : result.링크, count : result.참여인원, id : result.번호, isResult : true}}">
                       <span  @click="openModal" class="black--text">{{index+1}}. {{result["제목"]}}</span>
                     </router-link>
                  </v-list>
@@ -51,6 +51,7 @@ export default {
         
         eventBus.$on('close', () => {
               self.showModal = !self.showModal
+              
         })
       
         

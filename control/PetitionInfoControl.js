@@ -1,6 +1,7 @@
 const SearchResult = require('../model/SearchResult')
 const usersQuery = require("../model/usersQuery");
 const request = require('request');
+const querystring = require('querystring');
 
  class DetailInfo {
     constructor(){
@@ -28,17 +29,20 @@ const request = require('request');
         }, (error,response, body)=>{
             const PetitionData = body
            
-            res.status(200).json(PetitionData)
+            //res.status(200).json([PetitionData])
             
         })
-        //let data = [] 
-        //data.push(SearchResult)
-        //res.status(200).json(data)
+        let data = [] 
+        data.push(SearchResult)
+        res.status(200).json(data)
     }
     postHistory(req,res){
         const petitionId = req.body.petitionID
         const userEmail = req.body.email
         usersQuery.addHistory(userEmail,petitionId)
+                  .then(() => {res.status(200).json({})})
+                  .catch(() =>{res.status(401).json({})})
+                  
     }
     getHistory(req,res){
         const email = req.query.email
@@ -58,15 +62,27 @@ const request = require('request');
                         }
                         return a;
                     },[])
-                    //console.log(idList)
-                    //idList의 값들을 Django에 request 보낸다.
-
-                    res.status(200).json({
-                        history : idList    
-                    })
-
+                   
+                    return idList
                   })
-                  .catch(()=>{})
+                  .then((data) => {
+                    
+                    let recentPageID = []
+                    let lastIndex = data.length - 1;
+                    for(let i = lastIndex; i >lastIndex-5 ;i-- ){
+                        recentPageID.push(data[i])
+                    }
+                    
+                    request.get({
+                        url : 'http://192.168.1.2:8000/apis/history',
+                        qs : recentPageID,
+                        json : true
+                    }, (error,response, body)=>{
+                        const PetitionData = body
+                        res.status(200).json([PetitionData])
+                    })   
+                  })
+                 
     }
     postRecommend(req,res) {
         const petitionId = req.body.petitionID

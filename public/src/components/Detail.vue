@@ -13,6 +13,7 @@
           
            <h3> {{this.$route.query.title}} </h3>
            <h4>{{this.$route.query.count}}</h4>
+           <h1 v-if="isEmpty">{{message}}</h1>
           <div class="modal-body">
             <slot name="body">
                <GChart
@@ -31,7 +32,7 @@
              <GChart
                 v-if="!isEmpty"
                 type="PieChart"
-                :data="SexData"
+                :data="AreaData"
                 :options="AreaOptions"
             />
           
@@ -39,9 +40,7 @@
               
             </div>
             </slot>
-          </div>
 
-          <div class="modal-footer">
             <slot name="footer">
               <span class="black--text"><b><v-btn @click="close">종료하기</v-btn></b></span>
               <router-link to="/"><span class="black--text"><b><v-btn @click="recommend">공감하기</v-btn></b></span></router-link>
@@ -49,6 +48,8 @@
               <a v-bind:href="this.$route.query.link"><span class="black--text"><b><v-btn>원문 보기</v-btn></b></span></a> 
             </slot>
           </div>
+
+         
         </div>
       </div>
     </div>
@@ -63,10 +64,10 @@
 import { GChart } from 'vue-google-charts'
 import {User} from '../api'
 import {UserInfo} from '../api'
-import { eventBus } from '../main';
 import {Token} from '../api';
 import {Petitions} from '../api'
 import axios from 'axios'
+import router from '../router'
 export default {
 
     components : {
@@ -90,6 +91,18 @@ export default {
                       ['남자',0],
                       ['여자',0],
                     ],
+                    AreaData : [
+                      ['area','공감수'],
+                      ['경기도',0],
+                      ['강원도',0],
+                      ['충청남도',0],
+                      ['충청북도',0],
+                      ['경상북도',0],
+                      ['경상남도',0],
+                      ['전라북도',0],
+                      ['전라남도',0],
+                      ['제주도',0]
+                    ],
                     AgeOptions : {
                         title : '연령별 분포'
                     },
@@ -98,13 +111,16 @@ export default {
                     },
                     AreaOptions : {
                          title : '지역별 분포'
-                    }
+                        
+                    },
+                    message : ''
         }
     },
     created() {
-      this.getUsers()
-    
+        this.getUsers()
+        this.addHistory()
     },
+    
 
     methods : {
         getUsers () {
@@ -113,7 +129,11 @@ export default {
                   
                   this.isEmpty = false;
                   this.userInfo = res.data;
-                  this.addHistory()
+                  if(res.data.message === 'No Recommend'){
+                    this.message = "해당 청원에 공감한 사람이 없습니다."
+                    this.isEmpty = true;
+                  }
+                
                 })
                 .catch(() => {
                   //this.$store.dispatch('logout')
@@ -132,10 +152,17 @@ export default {
                 })
         },
         close () {
-          eventBus.$emit('close')
+          
+          
+          if(this.$route.query.isResult){
+            router.back(-1)
+          }else{
+            router.push({name:'home'})
+          }
         },
         addHistory(){
           UserInfo.addHistory(this.$route.query.id)
+                  
         },
         recommend(){
           Petitions.postRecommend(this.$route.query.id)
@@ -154,6 +181,11 @@ export default {
               })
               this.SexData.forEach(data => {
                 if(data[0] === element.sex){
+                  data[1]++
+                }
+              })
+              this.AreaData.forEach(data => {
+                if(data[0] === element.area){
                   data[1]++
                 }
               })
@@ -185,7 +217,7 @@ export default {
 
 .modal-container {
   width: 800px;
-  height: 900px;
+  height: 800px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
