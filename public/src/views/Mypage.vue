@@ -121,11 +121,11 @@ export default {
             Sexitems : ['남자', '여자'],
             Ageitems : ['10대','20대','30대','40대','50대','60대'],
             Areaitems : ['경기도','강원도','충청남도','충청북도','경상북도','경상남도','전라북도','전라남도','제주도'],
-            email : localStorage.getItem('email'),
-            nickname : localStorage.getItem('Nickname'),
-            Sex : localStorage.getItem('Sex'),
-            Area : localStorage.getItem('Area'),
-            Age : localStorage.getItem('Age'),
+            email : sessionStorage.getItem('email'),
+            nickname : sessionStorage.getItem('Nickname'),
+            Sex : sessionStorage.getItem('Sex'),
+            Area : sessionStorage.getItem('Area'),
+            Age : sessionStorage.getItem('Age'),
             password : '',
             password2 : '',
             delpassword : '',
@@ -144,11 +144,11 @@ export default {
                     .then((res) => {
                         if(res.status === 200){
                         this.$router.replace({path : '/'})
-                        localStorage.setItem('email',this.email)
-                        localStorage.setItem('Nickname',this.nickname)
-                        localStorage.setItem('Sex',this.Sex)
-                        localStorage.setItem('Area',this.Area)
-                        localStorage.setItem('Age',this.Age)
+                        sessionStorage.setItem('email',this.email)
+                        sessionStorage.setItem('Nickname',this.nickname)
+                        sessionStorage.setItem('Sex',this.Sex)
+                        sessionStorage.setItem('Area',this.Area)
+                        sessionStorage.setItem('Age',this.Age)
                         }
                     })
                     .catch(()=> {
@@ -156,9 +156,9 @@ export default {
                        .then(res => {
                           if(res.status === 200){
                             const newToken = res.data.token
-                            localStorage.removeItem('access-token')
-                            localStorage.setItem('access-token',newToken);
-                            const accessToken = localStorage.getItem('access-token');
+                            sessionStorage.removeItem('access-token')
+                            sessionStorage.setItem('access-token',newToken);
+                            const accessToken = sessionStorage.getItem('access-token');
                             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                             this.$router.replace({name : 'home'})
                           }
@@ -182,9 +182,9 @@ export default {
                        .then(res => {
                           if(res.status === 200){
                             const newToken = res.data.token
-                            localStorage.removeItem('access-token')
-                            localStorage.setItem('access-token',newToken);
-                            const accessToken = localStorage.getItem('access-token');
+                            sessionStorage.removeItem('access-token')
+                            sessionStorage.setItem('access-token',newToken);
+                            const accessToken = sessionStorage.getItem('access-token');
                             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
                             this.$router.replace({name : 'home'})
                           }

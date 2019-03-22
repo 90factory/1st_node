@@ -35,13 +35,13 @@ export default new Vuex.Store({
                 .then(res=> {
                         const token = res.data.token
                         const RefreshToken = res.data.RefreshToken
-                        localStorage.setItem("access-token", token)
-                        localStorage.setItem("refresh-token",RefreshToken)
-                        localStorage.setItem("email",res.data.email)
-                        localStorage.setItem("Nickname",res.data.Nickname)
-                        localStorage.setItem("Sex",res.data.Sex)
-                        localStorage.setItem("Area",res.data.Area)
-                        localStorage.setItem("Age",res.data.Age)
+                        sessionStorage.setItem("access-token", token)
+                        sessionStorage.setItem("refresh-token",RefreshToken)
+                        sessionStorage.setItem("email",res.data.email)
+                        sessionStorage.setItem("Nickname",res.data.Nickname)
+                        sessionStorage.setItem("Sex",res.data.Sex)
+                        sessionStorage.setItem("Area",res.data.Area)
+                        sessionStorage.setItem("Age",res.data.Age)
                         dispatch('gettoken')
                   })
                   .catch(() => {
@@ -51,11 +51,11 @@ export default new Vuex.Store({
 
     },
     gettoken({commit}) {
-      let token = localStorage.getItem("access-token")
+      let token = sessionStorage.getItem("access-token")
       router.push({name: 'home'})
       if(token !== null){
         commit('loginSuccess')
-        const accessToken = localStorage.getItem('access-token');
+        const accessToken = sessionStorage.getItem('access-token');
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
       }
     },
@@ -63,14 +63,14 @@ export default new Vuex.Store({
       commit("loginError")
     },
     logout({commit}){
-        localStorage.removeItem('access-token')
-        localStorage.removeItem('email')
-        localStorage.removeItem('Nickname')
-        localStorage.removeItem('Sex')
-        localStorage.removeItem('Area')
-        localStorage.removeItem('Age')
+        sessionStorage.removeItem('access-token')
+        sessionStorage.removeItem('email')
+        sessionStorage.removeItem('Nickname')
+        sessionStorage.removeItem('Sex')
+        sessionStorage.removeItem('Area')
+        sessionStorage.removeItem('Age')
         commit("logout")
         router.push({name : 'home'})
     }
-  }
+  }   
 })

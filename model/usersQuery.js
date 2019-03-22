@@ -48,13 +48,11 @@ module.exports = class users {
     static updateUserInfo(email,area,nickname,sex,age){
       const update = "UPDATE test123.users SET Area=?, Nickname=?, Sex=?, Age=? WHERE Email in (?)"
       const values = [area,nickname,sex,age,email];
-      //db.execute(update,values)
       return db.execute(update,values)
     }
     static updatePassword(password,email){
         const update = 'UPDATE test123.users SET Password = ? WHERE Email in (?)';
         const values = [String(password),String(email)];
-        //db.execute(update,values); 
         return db.execute(update,values);
     }
 

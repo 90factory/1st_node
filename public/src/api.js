@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 //const DOMAIN = 'http://localhost:3000'
-const DOMAIN = 'http://192.168.1.4:3000'
+const DOMAIN = 'http://192.168.1.8:3000'
 const api = (method, url, data) => {
     return axios({
         method,
@@ -68,12 +68,12 @@ export const UserInfo = {
             DOMAIN+'/history',
             {
             ID : ID,
-            email : localStorage.getItem('email')
+            email : sessionStorage.getItem('email')
             })
     },
     getHistory() {
         return axios.get(DOMAIN+'/history',{
-           params:{ email : localStorage.getItem('email')}
+           params:{ email : sessionStorage.getItem('email')}
         })
     }
 }
@@ -88,7 +88,7 @@ export const Petitions = {
 
         return axios.post(DOMAIN+'/recommend',{
             petitionID : petitionID,
-            email : localStorage.getItem('email')
+            email : sessionStorage.getItem('email')
         })
     }
  
@@ -108,7 +108,7 @@ export const Search = {
 export const Token = {
     
     getNewToken () {
-        const refreshToken = localStorage.getItem('refresh-token');
+        const refreshToken = sessionStorage.getItem('refresh-token');
         axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`
         return axios.get(DOMAIN+'/refreshtoken')
     }

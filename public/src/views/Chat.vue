@@ -32,10 +32,10 @@ import io from 'socket.io-client'
 export default {
     data () {
         return {
-            user: localStorage.getItem('Nickname'),
+            user: sessionStorage.getItem('Nickname'),
             message : '',
             messages : [],
-            socket : io('http://192.168.1.4:3000',{transports : ['websocket']}),
+            socket : io('http://localhost:3000',{transports : ['websocket']}),
             height : '',
             offsetTop : 400
         }

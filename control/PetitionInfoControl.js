@@ -2,8 +2,8 @@ const SearchResult = require('../model/SearchResult')
 const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
-const Url = 'http://192.168.1.5:8000'
-//const Url = 'http://192.168.1.6:8000'
+//const Url = 'http://192.168.1.5:8000'
+const Url = 'http://192.168.1.6:8000'
  class DetailInfo {
     constructor(){
 
@@ -21,9 +21,9 @@ const Url = 'http://192.168.1.5:8000'
                 res.status(401).json({message : "Fail"})
             }
         })
-        /*let data = [ ] 
-        data.push(SearchResult)
-        res.status(200).json(data)*/
+        //let data = [ ] 
+        //data.push(SearchResult)
+        //res.status(200).json(data)
     }
     getSearch(req,res){
         request.get({
@@ -38,15 +38,19 @@ const Url = 'http://192.168.1.5:8000'
                 res.status(401).json({message : "Fail"})
             }
         })
-       /* let data = [] 
-        data.push(SearchResult)
-        res.status(200).json(data)*/
+        //let data = [] 
+        //data.push(SearchResult)
+        //res.status(200).json(data)
     }
     postHistory(req,res){
         const petitionId = req.body.ID
         const userEmail = req.body.email
+        console.log(petitionId)
+        console.log(userEmail)
         usersQuery.addHistory(userEmail,petitionId)
-                  .then(() => {res.status(200).json({message : "Success"})})
+                  .then(() => {
+                                    res.status(200).json({message : "Success"})
+                                  })
                   .catch(() =>{res.status(401).json({message : "Fail"})})
                   
     }
@@ -99,8 +103,15 @@ const Url = 'http://192.168.1.5:8000'
         const userEmail = req.body.email
         console.log(petitionId)
         usersQuery.postRecommend(userEmail,petitionId)
-                  .then(()=>{res.status(200).json({message : 'success'})})
-                  .catch(() => {res.status(401).json({message :' fail '})})
+                  .then((data)=>{
+                      
+                      res.status(200).json({message : 'success'}
+                      
+                  )})
+                  .catch((err) => {
+                      res.status(401).json({message :'Fail'})
+                  })
+                 
         
        
     }

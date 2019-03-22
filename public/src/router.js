@@ -20,7 +20,7 @@ const rejectAuthUser = (to, from, next) => {
     }
 }
 const onlyAuthUser = (to, from, next) => {
-  if(localStorage.getItem("access-token") === null) {
+  if(sessionStorage.getItem("access-token") === null) {
     alert('로그인 하셔야 사용 가능 합니다.')
     next("/login")
   } else {
