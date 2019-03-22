@@ -60,7 +60,8 @@ export default new Router({
       path : '/history',
       name : 'history',
       beforeEnter : onlyAuthUser,
-      component : History
+      component : History,
+      children : [{path: 'historyresult',name:'historyresult',beforeEnter : onlyAuthUser, component : Detail}]
     },
     {
       path : '/setting',

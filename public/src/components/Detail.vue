@@ -126,7 +126,7 @@ export default {
     methods : {
         getUsers () {
             const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
-            User.fetch()
+            User.fetch(ID)
                 .then((res)=> {
                   
                   this.isEmpty = false;
@@ -159,11 +159,15 @@ export default {
                 })
         },
         close () {
-          
           if(this.$route.query.isResult){
             router.back(-1)
           }
-            router.push(-1)
+          else if(this.$route.query.isResult){
+            router.back(-1)
+          }
+          else if(this.$route.query.isHome){
+            router.back(-1)
+          }
           
         },
         addHistory(){

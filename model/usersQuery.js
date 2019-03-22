@@ -71,7 +71,7 @@ module.exports = class users {
     }
 
     static findHistory(email) {
-        const find = 'SELECT Email,DocumentID,ReadingPageTime FROM test123.history WHERE Email in (?)'
+        const find = 'SELECT Email,DocumentID,HistoryID FROM test123.history WHERE Email in (?)'
         const values = [String(email)];
         return db.execute(find,values);
     }
@@ -79,7 +79,7 @@ module.exports = class users {
     static postRecommend(email,petitionID) {
         const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime,VotingStatus) VALUES(?,?,?,NOW(),?)'
         const values = [null,String(email),Number(petitionID),Number(1)]
-        db.execute(insert,values);
+        return db.execute(insert,values);
     }
     
     static getRecommend(petitionID) {

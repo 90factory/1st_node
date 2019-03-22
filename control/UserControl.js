@@ -7,42 +7,44 @@ module.exports = class Member {
 
   }
   getUserInfo(req,res){
+    console.log(req.query)
     const petitionID = req.query.petitionID;
+    console.log(petitionID)
     usersQuery.getRecommend(petitionID)
               .then((data)=>{
-                let temp = []
-                data[0].forEach(recommend => {
-                   if(recommend.VotingStatus === 1){
-                      temp.push(recommend.Email)
-                   }
-                   
-                })
+                    let temp = []
+                    data[0].forEach(recommend => {
+                      if(recommend.VotingStatus === 1){
+                          temp.push(recommend.Email)
+                      }
+                      
+                    })
 
-                if(temp.length === 0){
-                  res.status(200).json({message : "No Recommend"})
-                  return 0;
-                }
-
-                let emailList = temp.reduce((a,b) => {
-                    if( a.indexOf(b) < 0){
-                      a.push(b)
+                    if(temp.length === 0){
+                      res.status(200).json({message : "No Recommend"})
+                      return 0;
                     }
-                    return a
-                },[])
-                
-                  usersQuery.findInfo(emailList)
-                          .then(data =>{
-                            let userData = []
-                            data[0].forEach(info =>{
-                              let data = {}
-                              data.sex = info.Sex
-                              data.age = info.Age
-                              data.area = info.Area
-                              userData.push(data)
-                            })
-                            res.status(200).json(userData)
-                          })
-                          .catch(() =>{res.status(401).json({})})
+
+                    let emailList = temp.reduce((a,b) => {
+                        if( a.indexOf(b) < 0){
+                          a.push(b)
+                        }
+                        return a
+                    },[])
+                    
+                      usersQuery.findInfo(emailList)
+                              .then(data =>{
+                                  let userData = []
+                                  data[0].forEach(info =>{
+                                  let data = {}
+                                  data.sex = info.Sex
+                                  data.age = info.Age
+                                  data.area = info.Area
+                                  userData.push(data)
+                                })
+                                res.status(200).json(userData)
+                              })
+                              .catch(() =>{res.status(401).json({})})
               })
               .catch(()=>{
                 res.status(401).json({message :"No Data"})
@@ -59,8 +61,13 @@ module.exports = class Member {
    
     usersQuery.updateUserInfo(email,area,nickname,sex,age)
               .then(()=>{
-                return res.status(200).json({
+                res.status(200).json({
                     message : "update Completed"
+                })
+              })
+              .catch(()=>{
+                res.status(401).json({
+                    message : "Fail"
                 })
               })
   }
@@ -73,8 +80,13 @@ module.exports = class Member {
    
     usersQuery.updateUserInfo(email,area,nickname,sex,age)
               .then(()=>{
-                return res.status(200).json({
+                res.status(200).json({
                     message : "update Completed"
+                })
+              })
+              .catch(() => {
+                res.status(401).json({
+                    message : "Fail"
                 })
               })
   }
@@ -88,11 +100,11 @@ module.exports = class Member {
     const cryptoPassword = crypto.createHash('sha512').update(password).digest('base64');                  
     usersQuery.singUp(newEmail,cryptoPassword,area,age,sex,nickname)
               .then(()=> {
-                return res.status(200).json({
+                 res.status(200).json({
                     message : "Sign up Completed"
                 })
               })             
-              .catch(() =>{return res.status(401).json({message : "Sign up Fail"})})
+              .catch(() =>{res.status(401).json({message : "Sign up Fail"})})
   }
   deleteUser(req,res){
     const email = req.body.email
@@ -102,9 +114,11 @@ module.exports = class Member {
               .then(result => {
                 if(result[0][0]['Password'] === String(cryptoPassword)){
                     usersQuery.deleteUser(email)
-                    return res.status(200).json({
+                    res.status(200).json({
                         message : "Delete User Completed"
-                })}})
+                })
+                }
+              })
               .catch(() => { res.status(401).json({message : "wrong password"}) })
   }
 

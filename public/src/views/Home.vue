@@ -8,7 +8,7 @@
                     <h1>청원수 Top 5</h1>
                   
                     <v-content  v-for="(p, index) in Top5petitions" :key="index">
-                     <router-link :to="{ name : 'detail', query: {title : p.제목,link : p.링크, count : p.참여인원, id : p.번호}}"><span  @click="openModal" class="black--text">{{index+1}}. {{p["제목"]}}</span></router-link>
+                     <router-link :to="{ name : 'detail', query: {title : p.제목,link : p.링크, count : p.참여인원, id : p.번호, isHome : true}}"><span  @click="openModal" class="black--text">{{index+1}}. {{p["제목"]}}</span></router-link>
                     </v-content>
                   </v-card>
                 </div>
