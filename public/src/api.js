@@ -62,12 +62,12 @@ export const UserInfo = {
             password : password
         })
     },
-    addHistory(petitionID) {
+    addHistory(ID) {
 
         return axios.post(
             DOMAIN+'/history',
             {
-            petitionID : petitionID,
+            ID : ID,
             email : localStorage.getItem('email')
             })
     },

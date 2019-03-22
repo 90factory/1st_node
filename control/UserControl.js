@@ -8,7 +8,6 @@ module.exports = class Member {
   }
   getUserInfo(req,res){
     const petitionID = req.query.petitionID;
-    console.log(petitionID)
     usersQuery.getRecommend(petitionID)
               .then((data)=>{
                 let temp = []
@@ -41,7 +40,6 @@ module.exports = class Member {
                               data.area = info.Area
                               userData.push(data)
                             })
-                            console.log(userData)
                             res.status(200).json(userData)
                           })
                           .catch(() =>{res.status(401).json({})})

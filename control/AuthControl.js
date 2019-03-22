@@ -17,13 +17,13 @@ module.exports = class Auth {
                     const dbPassword = data[0][0]["Password"];
                     if(CryptoPassword === dbPassword){
                         const opts = {}
-                        opts.expiresIn = '1h';
+                        opts.expiresIn = 60;
                         const secret = "SECRET_KEY"
                         const token = jwt.sign({email}, secret, opts);
 
                         const optsrefresh = {}
                         const secretRefresh = "SECRET_KEY"
-                        optsrefresh.expiresIn = "1day"
+                        optsrefresh.expiresIn = '1day'
                         const RefreshToken = jwt.sign({email}, secretRefresh, optsrefresh);
 
 
@@ -52,7 +52,7 @@ module.exports = class Auth {
   getNewToken(req,res){
     const AccessToken = req.headers['authorization']
     const opts = {}
-    opts.expiresIn = '1h';
+    opts.expiresIn = 60;
     const secret = "SECRET_KEY"
     jwt.verify(AccessToken,secret,(err, decoded) => {
 

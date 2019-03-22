@@ -2,42 +2,43 @@ const SearchResult = require('../model/SearchResult')
 const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
-
+const ubuntuUrl = 'http://192.168.1.5:8000'
+const testUrl = 'http://192.168.1.6:8000'
  class DetailInfo {
     constructor(){
 
     }
     getPetition(req,res){
         request({
-            url : 'http://192.168.1.2:8000/apis/entire',
+            url : ubuntuUrl + '/apis/entire',
             json : true,
             
         }, (error,response, body)=>{
             const PetitionData = body
          
-            //res.status(200).json(PetitionData)
+            res.status(200).json(PetitionData)
         })
-        let data = [ ] 
-        data.push(SearchResult)
-        res.status(200).json(data)
+        //let data = [ ] 
+        //data.push(SearchResult)
+        //res.status(200).json(data)
     }
     getSearch(req,res){
         request.get({
-            url : 'http://192.168.1.2:8000/apis/keyword',
+            url : ubuntuUrl+'/apis/keyword',
             qs : req.query,
             json : true
         }, (error,response, body)=>{
             const PetitionData = body
            
-            //res.status(200).json([PetitionData])
+            res.status(200).json([PetitionData])
             
         })
-        let data = [] 
-        data.push(SearchResult)
-        res.status(200).json(data)
+        //let data = [] 
+        //data.push(SearchResult)
+        //res.status(200).json(data)
     }
     postHistory(req,res){
-        const petitionId = req.body.petitionID
+        const petitionId = req.body.ID
         const userEmail = req.body.email
         usersQuery.addHistory(userEmail,petitionId)
                   .then(() => {res.status(200).json({})})
@@ -62,7 +63,7 @@ const querystring = require('querystring');
                         }
                         return a;
                     },[])
-                   
+                    
                     return idList
                   })
                   .then((data) => {
@@ -72,14 +73,18 @@ const querystring = require('querystring');
                     for(let i = lastIndex; i >lastIndex-5 ;i-- ){
                         recentPageID.push(data[i])
                     }
-                    
+                    //let testID = ['214435','314212','19313','531647','294032']
+                    console.log(recentPageID)
                     request.get({
-                        url : 'http://192.168.1.2:8000/apis/history',
+                        url : ubuntuUrl +'/apis/history',
                         qs : recentPageID,
                         json : true
                     }, (error,response, body)=>{
                         const PetitionData = body
-                        res.status(200).json([PetitionData])
+                        res.status(200).json(PetitionData)
+                        if(error){
+                            res.status(401).json({message : "Error"})
+                        }
                     })   
                   })
                  
@@ -87,6 +92,7 @@ const querystring = require('querystring');
     postRecommend(req,res) {
         const petitionId = req.body.petitionID
         const userEmail = req.body.email
+        console.log(petitionId)
         usersQuery.postRecommend(userEmail,petitionId)
     }
 

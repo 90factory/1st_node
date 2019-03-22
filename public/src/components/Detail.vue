@@ -119,12 +119,14 @@ export default {
     created() {
         this.getUsers()
         this.addHistory()
+        
     },
     
 
     methods : {
         getUsers () {
-            User.fetch(this.$route.query.id)
+            const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
+            User.fetch()
                 .then((res)=> {
                   
                   this.isEmpty = false;
@@ -148,24 +150,31 @@ export default {
                             this.$router.replace({name : 'home'})
                           }
                        })
+                       .catch(()=>{
+                        
+                            this.$store.dispatch('logout')
+                      
+                       })
 
                 })
         },
         close () {
           
-          
           if(this.$route.query.isResult){
             router.back(-1)
-          }else{
-            router.push({name:'home'})
           }
+            router.push(-1)
+          
         },
         addHistory(){
-          UserInfo.addHistory(this.$route.query.id)
+          
+          const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
+          UserInfo.addHistory(ID)
                   
         },
         recommend(){
-          Petitions.postRecommend(this.$route.query.id)
+          const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
+          Petitions.postRecommend(ID)
         }      
     },
     watch: {

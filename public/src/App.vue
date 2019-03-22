@@ -52,6 +52,9 @@ import { eventBus } from './main.js'
     computed: {
       ...mapState(['isLogin'])
     },
+    created() {
+   
+    },
     methods: {
     
       searchEvent () {

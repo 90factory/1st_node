@@ -3,10 +3,10 @@
         <v-layout>
             <v-flex>
                 <h1>최근 읽은 게시물</h1>
-                <div v-for="(id,index) in data" :key="index">
-                    {{id}}
+                
+                <div v-for="(result,index) in data[0]" :key="index">
+                    <span>{{data[0][index].제목}}</span>
                 </div>
-              
             </v-flex>
         </v-layout>
     </v-container>
@@ -17,7 +17,8 @@ export default {
     data() {
         return {
             isEmpty : true,
-            data : ''
+            data : [],
+            result : []
         }
     },
     created() {
@@ -28,14 +29,10 @@ export default {
             UserInfo.getHistory()
                     .then((res) => {
                         this.isEmpty = false;
-                        this.data = res.data.history
+                        this.data.push(res.data);
                     })
         }
-    },
-    watch: {
-        isEmpty : function(){
-
-        }
-    },
+    }
+    
 }
 </script>
