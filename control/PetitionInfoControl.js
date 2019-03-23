@@ -2,8 +2,8 @@ const SearchResult = require('../model/SearchResult')
 const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
-//const Url = 'http://192.168.1.5:8000'
-const Url = 'http://192.168.1.6:8000'
+const Url = 'http://192.168.1.17:8000'
+//const Url = 'http://192.168.1.6:8000'
  class DetailInfo {
     constructor(){
 

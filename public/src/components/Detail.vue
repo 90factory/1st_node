@@ -162,7 +162,7 @@ export default {
           if(this.$route.query.isResult){
             router.back(-1)
           }
-          else if(this.$route.query.isResult){
+          else if(this.$route.query.isHistory){
             router.back(-1)
           }
           else if(this.$route.query.isHome){
