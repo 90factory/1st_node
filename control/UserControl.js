@@ -9,7 +9,7 @@ module.exports = class Member {
   getUserInfo(req,res){
     console.log(req.query)
     const petitionID = req.query.petitionID;
-    console.log(petitionID)
+    
     usersQuery.getRecommend(petitionID)
               .then((data)=>{
                     let temp = []
@@ -113,8 +113,7 @@ module.exports = class Member {
     
     usersQuery.searchPassword(email)
               .then(result => {
-                console.log(result[0][0]['Password'])
-                console.log(cryptoPassword)
+               
                 if(result[0][0]['Password'] === String(cryptoPassword)){
                     usersQuery.deleteUser(email)
                               .then(()=>{

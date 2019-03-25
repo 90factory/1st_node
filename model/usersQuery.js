@@ -76,6 +76,8 @@ module.exports = class users {
     }
 
     static postRecommend(email,petitionID) {
+        console.log(email)
+        console.log(petitionID)
         const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime,VotingStatus) VALUES(?,?,?,NOW(),?)'
         const values = [null,String(email),Number(petitionID),Number(1)]
         return db.execute(insert,values);

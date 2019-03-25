@@ -17,7 +17,7 @@ module.exports = class Auth {
                     const dbPassword = data[0][0]["Password"];
                     if(CryptoPassword === dbPassword){
                         const opts = {}
-                        opts.expiresIn = 30;
+                        opts.expiresIn = '1h';
                         const secret = "SECRET_KEY"
                         const token = jwt.sign({email}, secret, opts);
 
@@ -52,7 +52,7 @@ module.exports = class Auth {
   getNewToken(req,res){
     const AccessToken = req.headers['authorization']
     const opts = {}
-    opts.expiresIn = 30;
+    opts.expiresIn = '1h';
     const secret = "SECRET_KEY"
     jwt.verify(AccessToken,secret,(err, decoded) => {
 
