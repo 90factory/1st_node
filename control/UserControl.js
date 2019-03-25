@@ -72,23 +72,23 @@ module.exports = class Member {
               })
   }
   updatePassword(req,res){
+
     const email = req.body.email;
-    const area = req.body.area;
-    const nickname = req.body.nickname;
-    const sex = req.body.sex;
-    const age = req.body.age
-   
-    usersQuery.updateUserInfo(email,area,nickname,sex,age)
-              .then(()=>{
+    const password = req.body.password;
+    const cryptoPassword = crypto.createHash('sha512').update(password).digest('base64'); 
+    usersQuery.updatePassword(cryptoPassword,email)
+              .then(() => {
                 res.status(200).json({
-                    message : "update Completed"
+                  message : "update Completed"
                 })
               })
-              .catch(() => {
+              .catch(()=> {
                 res.status(401).json({
-                    message : "Fail"
-                })
+                  message : "Fail"
               })
+              })
+    
+   
   }
   registerUser(req,res){
     const newEmail = req.body.email;
