@@ -15,7 +15,14 @@
                     class="mb-3"
                     >
                     중복된 닉네임 입니다.
-                </v-alert> 
+                </v-alert>
+                  <v-alert
+                    :value="emptyerror"
+                    type="error"
+                    class="mb-3"
+                    >
+                 <span v-for="(item,index) in emptylist" :key="index"> {{item}} </span>항목을 입력하세요
+                </v-alert>  
                 <v-card>
                     <v-toolbar flat>
                     <v-toolbar-title>회원가입</v-toolbar-title>
@@ -62,6 +69,7 @@
                     >회원가입
                     </v-btn>
                     </div>
+             
                 </v-card>
             </v-flex>
         </v-layout>
@@ -84,11 +92,19 @@ export default {
             Areavalue : '',
             error : false,
             nickerror : false,
+            emptyerror : false,
+            emptylist : []
         }
     },
+   
+       
+ 
     methods: {
         register() {
-
+             this.error = false,
+             this.nickerror = false,
+             this.emptyerror = false
+             this.emptylist = []
             Register.fetch(this.email,this.password,this.Sexvalue,this.Agevalue,this.Areavalue,this.nickname)
                     .then((res) => {
                       
@@ -96,16 +112,29 @@ export default {
                            this.$router.replace({path : '/login'})
                       }else if(res.data.message === 'Already register Nickname') {
                            this.nickerror =true
-                      } 
+                      }else if(res.data.message === 'Empty information') {
+                          this.emptyerror = true;
+                          res.data.data.forEach((data) => {
+                              if(data === 'email')this.emptylist.push('이메일')
+                              if(data === 'password')this.emptylist.push('비밀번호')
+                              if(data === 'nickname')this.emptylist.push('닉네임')
+                              if(data === 'area')this.emptylist.push('지역')
+                              if(data === 'age')this.emptylist.push('나이')
+                              if(data === 'sex')this.emptylist.push('성별')
+                              
+                          })
+                         
+                      }
                     })
                     .catch(() => {
                         this.error = true
                     })
             
-                        
+            
               
         
         }
-    },
+    }
+    
 }
 </script>
