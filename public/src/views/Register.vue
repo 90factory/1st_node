@@ -9,6 +9,13 @@
                     >
                     중복된 이메일 입니다.
                 </v-alert> 
+                 <v-alert
+                    :value="nickerror"
+                    type="error"
+                    class="mb-3"
+                    >
+                    중복된 닉네임 입니다.
+                </v-alert> 
                 <v-card>
                     <v-toolbar flat>
                     <v-toolbar-title>회원가입</v-toolbar-title>
@@ -75,17 +82,21 @@ export default {
             Sexvalue : '',
             Agevalue :'',
             Areavalue : '',
-            error : false
+            error : false,
+            nickerror : false,
         }
     },
     methods: {
         register() {
 
             Register.fetch(this.email,this.password,this.Sexvalue,this.Agevalue,this.Areavalue,this.nickname)
-                    .then(() => {
+                    .then((res) => {
                       
-                      this.$router.replace({path : '/login'})
-                      
+                      if(res.data.message === 'Sign up Completed') {
+                           this.$router.replace({path : '/login'})
+                      }else if(res.data.message === 'Already register Nickname') {
+                           this.nickerror =true
+                      } 
                     })
                     .catch(() => {
                         this.error = true
