@@ -31,34 +31,46 @@
                     <v-text-field
                     label="email"
                     v-model="email"
+                    :rules="emailRules"
+                    required
                     >
                     </v-text-field>
                     <v-text-field
                     label="password"
                     v-model="password"
                     type="password"
+                     :rules="passwordRules"
+                    required
                     >
                     </v-text-field>
                     <v-text-field
                     label="닉네임"
                     v-model="nickname"
                     type="name"
+                    :rules="nickRules"
+                    required
                     >
                     </v-text-field>
                     <v-select
                     :items="Sexitems"
                     v-model="Sexvalue"
                     label="성별"
+                    :rules="[v => !!v || 'Item is required']"
+                    required
                     ></v-select>
                     <v-select
                     :items="Areaitems"
                     label="지역"
                     v-model="Areavalue"
+                    :rules="[v => !!v || 'Item is required']"
+                    required
                     ></v-select>
                     <v-select
                     :items="Ageitems"
                     label="나이"
                     v-model="Agevalue"
+                    :rules="[v => !!v || 'Item is required']"
+                    required
                     ></v-select>
                     <v-btn 
                     color="primary"
@@ -90,22 +102,30 @@ export default {
             Sexvalue : '',
             Agevalue :'',
             Areavalue : '',
+            valid: false,
             error : false,
             nickerror : false,
             emptyerror : false,
-            emptylist : []
+            emptylist : [],
+            emailRules: [
+                v => !!v || '이메일 입력하세요',
+                v => /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/.test(v) || '옳바른 이메일 입력하세요'
+            ],
+            passwordRules : [
+                v => !!v || '패스워드를 입력하세요'
+            ],
+            nickRules : [
+                v => !!v|| '닉네임을 입력하세요'
+            ]
         }
     },
-   
-       
- 
     methods: {
         register() {
              this.error = false,
              this.nickerror = false,
              this.emptyerror = false
              this.emptylist = []
-            Register.fetch(this.email,this.password,this.Sexvalue,this.Agevalue,this.Areavalue,this.nickname)
+             Register.fetch(this.email,this.password,this.Sexvalue,this.Agevalue,this.Areavalue,this.nickname)
                     .then((res) => {
                       
                       if(res.data.message === 'Sign up Completed') {

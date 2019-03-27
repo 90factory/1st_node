@@ -12,7 +12,6 @@ const Url = 'http://192.168.1.17:8000'
         request({
             url : Url + '/apis/entire',
             json : true,
-            
         }, (error,response, body)=>{
             const PetitionData = body
          
