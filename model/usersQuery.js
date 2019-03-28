@@ -57,9 +57,10 @@ module.exports = class users {
     }
 
     static deleteUser(email){
+    
         const insert = 'DELETE FROM test123.users WHERE Email in (?)';
         const values = [String(email)];
-        db.execute(insert,values); 
+        return db.execute(insert,values); 
     }
 
     static addHistory(email,petitionID){
