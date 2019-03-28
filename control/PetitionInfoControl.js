@@ -3,7 +3,7 @@ const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
 const Url = 'http://192.168.1.17:8000'
-//const Url = 'http://192.168.1.6:8000'
+//const Url = 'http://192.168.1.2:8000'
  class DetailInfo {
     constructor(){
 
@@ -12,7 +12,6 @@ const Url = 'http://192.168.1.17:8000'
         request({
             url : Url + '/apis/entire',
             json : true,
-            
         }, (error,response, body)=>{
             const PetitionData = body
          
@@ -45,8 +44,7 @@ const Url = 'http://192.168.1.17:8000'
     postHistory(req,res){
         const petitionId = req.body.ID
         const userEmail = req.body.email
-        console.log(petitionId)
-        console.log(userEmail)
+
         usersQuery.addHistory(userEmail,petitionId)
                   .then(() => {
                                     res.status(200).json({message : "Success"})
@@ -101,19 +99,48 @@ const Url = 'http://192.168.1.17:8000'
     postRecommend(req,res) {
         const petitionId = req.body.petitionID
         const userEmail = req.body.email
-        console.log(petitionId)
-        usersQuery.postRecommend(userEmail,petitionId)
-                  .then((data)=>{
-                      
-                      res.status(200).json({message : 'success'}
-                      
-                  )})
-                  .catch((err) => {
-                      res.status(401).json({message :'Fail'})
+        let isRecommended = false;
+
+        usersQuery.getRecommend(petitionId)
+                  .then((data) => {
+                        const recommendResult = data[0]
+                        
+                        recommendResult.forEach(recommend => {
+                            
+                            if(recommend.Email === userEmail){
+                               if(recommend.VotingStatus === 1){
+                                
+                                isRecommended = true;
+                            
+                               }
+                            }
+                            
+                        })
+                        return isRecommended;
+                    })
+                  .then((result) => {
+                     
+                      if(!result) {
+                          
+                          usersQuery.postRecommend(userEmail, petitionId)
+                                    .then(() => {
+                                        res.status(200).json({message : "Success"})
+                                    })
+                                    .catch((err) => {
+                                        if(err) {
+                                            res.status(401).json({message : 'Fail'})
+                                        }
+                                    })
+                      }
+                      else {
+                          res.status(200).json({message : 'Already Recommend'})
+                      }
                   })
-                 
-        
-       
+                
+                  
+                   
+                    
+
     }
 
 }

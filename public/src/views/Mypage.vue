@@ -1,7 +1,7 @@
 <template> 
     <v-container fill-height style="max-width:450px;">
         <v-layout align-center row wrap>
-            <v-flex xs12>
+            <v-flex>
                 <v-card>
                     <v-toolbar flat>
                     <v-toolbar-title >
@@ -11,11 +11,6 @@
                     </v-toolbar-title>
                     </v-toolbar>
                     <div class="pa-3" v-if="reviseshow">
-                    <v-text-field
-                    label="email"
-                    v-model="email"
-                    >
-                    </v-text-field>
                     <v-text-field
                     label="닉네임"
                     v-model="nickname"

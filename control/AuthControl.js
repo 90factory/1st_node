@@ -52,7 +52,7 @@ module.exports = class Auth {
   getNewToken(req,res){
     const AccessToken = req.headers['authorization']
     const opts = {}
-    opts.expiresIn = "1h";
+    opts.expiresIn = '1h';
     const secret = "SECRET_KEY"
     jwt.verify(AccessToken,secret,(err, decoded) => {
 

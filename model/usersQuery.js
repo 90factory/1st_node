@@ -57,9 +57,10 @@ module.exports = class users {
     }
 
     static deleteUser(email){
+    
         const insert = 'DELETE FROM test123.users WHERE Email in (?)';
         const values = [String(email)];
-        db.execute(insert,values); 
+        return db.execute(insert,values); 
     }
 
     static addHistory(email,petitionID){
@@ -75,6 +76,8 @@ module.exports = class users {
     }
 
     static postRecommend(email,petitionID) {
+        console.log(email)
+        console.log(petitionID)
         const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime,VotingStatus) VALUES(?,?,?,NOW(),?)'
         const values = [null,String(email),Number(petitionID),Number(1)]
         return db.execute(insert,values);
@@ -83,6 +86,12 @@ module.exports = class users {
     static getRecommend(petitionID) {
         const find = 'SELECT Email,VotingStatus FROM test123.history WHERE DocumentID in (?)'
         const values = [Number(petitionID)]
+        return db.execute(find,values);
+    }
+
+    static getCheckNickname(nickname) {
+        const find = 'SELECT Nickname FROM test123.users WHERE Nickname in (?)'
+        const values = [String(nickname)];
         return db.execute(find,values);
     }
 }
