@@ -88,4 +88,10 @@ module.exports = class users {
         const values = [Number(petitionID)]
         return db.execute(find,values);
     }
+
+    static getCheckNickname(nickname) {
+        const find = 'SELECT Nickname FROM test123.users WHERE Nickname in (?)'
+        const values = [String(nickname)];
+        return db.execute(find,values);
+    }
 }

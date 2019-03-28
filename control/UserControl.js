@@ -97,14 +97,24 @@ module.exports = class Member {
     const sex = req.body.sex;
     const age = req.body.age
     const password = req.body.password
-    const cryptoPassword = crypto.createHash('sha512').update(password).digest('base64');                  
-    usersQuery.singUp(newEmail,cryptoPassword,area,age,sex,nickname)
-              .then(()=> {
-                 res.status(200).json({
-                    message : "Sign up Completed"
-                })
-              })             
-              .catch(() =>{res.status(401).json({message : "Sign up Fail"})})
+    const cryptoPassword = crypto.createHash('sha512').update(password).digest('base64');
+    usersQuery.getCheckNickname(nickname)
+              .then((data) => {
+                  const registerStatus = data[0].length
+                  console.log(registerStatus)
+                  if(registerStatus !== 0){
+                    res.status(200).json({message : "Already register Nickname"})
+                  }else{
+                    usersQuery.singUp(newEmail,cryptoPassword,area,age,sex,nickname)
+                              .then(()=> {
+                                res.status(200).json({
+                                    message : "Sign up Completed"
+                                })
+                              })             
+                              .catch(() =>{res.status(401).json({message : "Sign up Fail"})})
+                                  }
+              })                  
+    
   }
   deleteUser(req,res){
     const email = req.body.email
