@@ -73,6 +73,7 @@
     },
     created() {
         this.getPetitions()
+     
         let self = this
         eventBus.$on('close', () => {
               self.showModal = !self.showModal
@@ -80,6 +81,7 @@
           })
     },
     methods : {
+      
          getPetitions () {
             Petitions.fetch()
                     .then((data) => {

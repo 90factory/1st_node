@@ -4,18 +4,18 @@
             <v-flex>
                 <v-card>
                     <v-toolbar flat>
-                    <v-toolbar-title >
+                    <v-toolbar-title v-if="type!=='SNS'" >
                         <v-btn flat @click="showRevise"><b>정보수정</b></v-btn>
                         <v-btn flat @click="showChange"><b>비밀번호 변경</b></v-btn>
                         <v-btn flat @click="showDelete"><b>회원 탈퇴</b></v-btn>
                     </v-toolbar-title>
+                     <v-toolbar-title  v-if="type ==='SNS'" class="v-toolbar-sns">
+                        <v-btn flat @click="showRevise"><b>정보수정</b></v-btn>
+                        <v-btn flat @click="showDelete"><b>회원 탈퇴</b></v-btn>
+                    </v-toolbar-title>
                     </v-toolbar>
                     <div class="pa-3" v-if="reviseshow">
-                    <v-text-field
-                    label="email"
-                    v-model="email"
-                    >
-                    </v-text-field>
+                    
                     <v-text-field
                     label="닉네임"
                     v-model="nickname"
@@ -46,7 +46,7 @@
                     >수정하기
                     </v-btn>
                     </div>
-                    <div class="pa-3" v-if="changeshow">
+                    <div class="pa-3" v-if="changeshow ">
                         <v-alert
                             :value="error"
                             type="error"
@@ -75,7 +75,7 @@
                          >비밀번호 변경
                         </v-btn>
                     </div>
-                    <div class="pa-3" v-if="deleteshow">
+                    <div class="pa-3" v-if="deleteshow && type!=='SNS'">
                         
                         <v-alert
                             :value="delerror"
@@ -105,6 +105,33 @@
                          >회원 탈퇴
                         </v-btn>
                     </div>
+
+                    <div class="pa-3" v-if="deleteshow && type==='SNS'">
+                        
+                        <v-alert
+                            :value="delerror"
+                            type="error"
+                            class="mb-3"
+                            >
+                            계정 이메일이 일치하지 않습니다.
+                        </v-alert>  
+                        <v-text-field
+                        label="SNS 계정 이메일"
+                        v-model="snsAccount"
+                        :rules="emailRules"
+                        type="email"
+                        required
+                        >
+                        </v-text-field>
+                         <v-btn 
+                         color="primary"
+                         large
+                         block
+                         depressed
+                         @click="delSnsInfo"
+                         >회원 탈퇴
+                        </v-btn>
+                    </div>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -130,12 +157,23 @@ export default {
             password2 : '',
             delpassword : '',
             delpassword2 : '',
+            snsAccount : '',
+            snsAccount2 : '',
             reviseshow : true,
             changeshow : false,
             error : false,
             delerror : false,
-            deleteshow : false
+            deleteshow : false,
+            type : sessionStorage.getItem("type"),
+            emailRules: [
+                v => !!v || '이메일 입력하세요',
+                v => /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/.test(v) || '옳바른 이메일 입력하세요'
+            ]
         }
+    },
+    computed : {
+        ...mapState(['isSnsMember']),
+        ...mapState(['userInfo'])
     },
     methods: {
         revise() {
@@ -206,6 +244,15 @@ export default {
                     })
         
         },
+        delSnsInfo() {
+            UserInfo.deleteSnsMember(this.email)
+                    .then((res)=>{
+                        if(res.status === 200) {
+                            this.$router.replace({path:'/'})
+                            this.$store.dispatch('logout')
+                        }
+                    })
+        },
         showRevise () {
             this.deleteshow = false
             this.changeshow = false
@@ -222,9 +269,7 @@ export default {
             this.reviseshow = false
         }
     },
-    computed: {
-        ...mapState(['userInfo'])
-    },
+    
     watch : {
         password2 : function(){
             if(this.password !== this.password2){
@@ -237,3 +282,10 @@ export default {
     }
 }
 </script>
+<style>
+    .v-toolbar-sns{
+        display : flex;
+        justify-content: center;
+        width:100%;
+    }
+</style>

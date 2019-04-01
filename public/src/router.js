@@ -9,6 +9,7 @@ import SearchResult from './views/SearchResult.vue'
 import History from './views/History.vue'  
 import Chatting from './views/Chat.vue'
 import Register from './views/Register.vue'
+import SnsSetting from './views/SnsSetting.vue'
 Vue.use(Router)
 
 const rejectAuthUser = (to, from, next) => {
@@ -27,6 +28,7 @@ const onlyAuthUser = (to, from, next) => {
     next()
   }
 }
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -79,6 +81,11 @@ export default new Router({
       path : '/register',
       name : 'register',
       component : Register
+    },
+    {
+      path : '/sns',
+      name : 'snssetting',
+      component : SnsSetting
     }
   
   ]

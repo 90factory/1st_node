@@ -11,17 +11,20 @@ export default new Vuex.Store({
     userInfo : null,
     isLogin : false,
     isLoginError : false
+  
   },
   mutations: { 
     loginSuccess(state) {
       state.isLogin = true
-   
+      
     },
+   
     loginError(state) {
       state.isLoginError = true
     },
     logout(state) {
       state.isLogin = false
+      state.isSnsMember = false
       state.isLoginError = false
       state.userInfo = null   
     }
@@ -50,13 +53,41 @@ export default new Vuex.Store({
                
 
     },
+    loginSNS({dispatch},loginObj) {
+   
+     sessionStorage.setItem("access-token",loginObj.token)
+     sessionStorage.setItem("email",loginObj.email)
+     sessionStorage.setItem("type",'SNS')
+     $cookies.remove('token')
+     $cookies.remove('email')    
+     const isNewMember = loginObj.isNewMember;
+     dispatch('getSnsToken',isNewMember)
+     
+    },
+    getSnsToken({commit},isNewMember) {
+      let token = sessionStorage.getItem("access-token")
+     
+      if(token !== null){
+        const accessToken = sessionStorage.getItem('access-token');
+        axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+        commit('loginSuccess')
+     
+      }
+      
+      if(isNewMember){
+        router.push({name: 'snssetting'})
+      }else{
+        router.push({name: 'home'})
+      }
+
+    },
     gettoken({commit}) {
       let token = sessionStorage.getItem("access-token")
       router.push({name: 'home'})
       if(token !== null){
-        commit('loginSuccess')
         const accessToken = sessionStorage.getItem('access-token');
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+        commit('loginSuccess')
       }
     },
     getError({commit}) {
@@ -64,11 +95,13 @@ export default new Vuex.Store({
     },
     logout({commit}){
         sessionStorage.removeItem('access-token')
+        sessionStorage.removeItem('refresh-token')
         sessionStorage.removeItem('email')
         sessionStorage.removeItem('Nickname')
         sessionStorage.removeItem('Sex')
         sessionStorage.removeItem('Area')
         sessionStorage.removeItem('Age')
+        sessionStorage.removeItem('type')
         commit("logout")
         router.push({name : 'home'})
     }

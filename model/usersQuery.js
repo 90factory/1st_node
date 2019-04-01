@@ -8,7 +8,13 @@ module.exports = class users {
         const values = [String(email),String(password),String(nickname),String(sex),String(age),String(area)];
         return db.execute(insert,values);
     }
-    
+
+    static registerSNSmember(email) { 
+        const insert = 'INSERT INTO test123.users(Email) VALUES(?)'
+        const values = [String(email)]
+        return db.execute(insert,values);
+    }
+
     static findUserInfo(email) {
         const find = 'SELECT Nickname,Sex,Age,Area,Password FROM test123.users WHERE Email in (?)'
         const values = [String(email)];
@@ -35,6 +41,10 @@ module.exports = class users {
     }
     static searchOneEmail (email) {
         const find = 'SELECT (?) FROM test123.users'
+        const value = [String(email)]
+        return db.execute(find,value)
+    }static searchSNSUser ( email) {
+        const find = 'SELECT Email FROM test123.users WHERE Email IN (?)'
         const value = [String(email)]
         return db.execute(find,value)
     }
