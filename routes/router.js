@@ -21,7 +21,7 @@ router.get('/detail',passport.authenticate('jwt',{session:false}),UserController
 router.get('/search',passport.authenticate('jwt',{session:false}),PetitionController.getSearch)
 router.post('/login', AuthController.getAuth)   
 router.get('/facebook',passport.authenticate('facebook'))
-router.get('/facebook/auth',passport.authenticate('facebook', {session: false,failureRedirect :'http://localhost:8080'}),AuthController.getSnsAuth)
+router.get('/facebook/auth',passport.authenticate('facebook', {session: false,failureRedirect :'http://192.168.1.8:8080'}),AuthController.getSnsAuth)
 router.get('/facebook/privateInfo',UserController.getSnsMember)
 router.post('/revise',passport.authenticate('jwt',{session:false}),UserController.updateUserInfo)
 router.post('/register',UserController.registerUser)
