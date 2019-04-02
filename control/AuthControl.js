@@ -58,7 +58,6 @@ module.exports = class Auth {
 
       
       const email = decoded
-      console.log(email)
       const token = jwt.sign({email}, secret, opts);
       return res.status(200).json({
         token
@@ -66,5 +65,20 @@ module.exports = class Auth {
     })
   }
  
+  getSnsAuth(req,res){
+    const email = req.user                       
+    const opts = {}
+    opts.expiresIn = '1h';
+    const secret = "SECRET_KEY"
+    const token = jwt.sign({email}, secret, opts);
+    req.session.token = token;
+    res.cookie('token',token)
+    res.cookie('email',email)
+    res.redirect('http://localhost:8080');
+  }
+
+  
+
+
 }
   

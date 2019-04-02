@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-
-//const DOMAIN = 'http://localhost:3000'
-const DOMAIN = 'http://192.168.1.8:3000'
+//const DOMAIN = '/api'
+const DOMAIN = 'http://localhost:3000'
+//const DOMAIN = 'http://192.168.1.8:3000'
 const api = (method, url, data) => {
     return axios({
         method,
@@ -28,6 +28,16 @@ export const Register = {
             area : area,
             nickname : nickname
         })
+    },
+    fetchSns (email,type,sex,age,area,nickname) {
+        return axios.post(DOMAIN+'/register/sns', {
+            email : email,
+            type : type,
+            sex : sex,
+            age : age,
+            area : area,
+            nickname : nickname
+        })
     }
 }
 export const Login = {
@@ -36,6 +46,14 @@ export const Login = {
             email : loginObj.email,
             password : loginObj.password
            })
+    },
+    getSnsMember (email) {
+      
+        return axios.get(DOMAIN+'/facebook/privateInfo',{params : { email : email}})
+     
+    },
+    session () {
+        return axios.get(DOMAIN+'/session')
     }
 }
 
@@ -61,6 +79,9 @@ export const UserInfo = {
             email : email,
             password : password
         })
+    },
+    deleteSnsMember(email) {
+        return axios.post(DOMAIN+'/delete/sns',{email : email})
     },
     addHistory(ID) {
 
@@ -113,3 +134,6 @@ export const Token = {
         return axios.get(DOMAIN+'/refreshtoken')
     }
 }
+
+
+    

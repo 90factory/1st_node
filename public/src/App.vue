@@ -41,9 +41,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { Search } from './api'
-
+import { mapState,mapActions } from 'vuex'
+import { Search,Login } from './api'
 import { eventBus } from './main.js'
   export default {
     data: () => ({
@@ -51,12 +50,14 @@ import { eventBus } from './main.js'
     }),
     computed: {
       ...mapState(['isLogin'])
+      
     },
     created() {
-   
+      
+      this.snsLogin()
     },
     methods: {
-    
+      ...mapActions(['loginSNS']),
       searchEvent () {
           
          
@@ -67,6 +68,31 @@ import { eventBus } from './main.js'
               
           this.$router.push({path : '/searchresult'})
           this.keyward = ''
+      },
+      snsLogin() {
+           const token =  this.$cookies.get('token')
+           const email = this.$cookies.get('email')
+           
+           if(token !== null && email !== null) {
+               Login.getSnsMember(email)
+                .then((res)=>{
+                    const SnsMemberInfo = res.data
+                    let isNewMember = false;
+
+                    sessionStorage.setItem('Nickname',SnsMemberInfo.Nickname)
+                    sessionStorage.setItem('Sex',SnsMemberInfo.Sex)
+                    sessionStorage.setItem('Area',SnsMemberInfo.Area)
+                    sessionStorage.setItem('Age',SnsMemberInfo.Age)
+                    if(SnsMemberInfo.Nickname === null){
+                      isNewMember = true;
+                    }
+                     
+                     this.loginSNS({token,email,isNewMember});
+                 
+                })
+              
+           
+           }
       }
     },
   }

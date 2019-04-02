@@ -136,9 +136,40 @@ module.exports = class Member {
         res.status(200).json({message : 'Wrong Email'})
     }
     
-                     
-    
   }
+  registerSnsMember(req,res) {
+    const SnsEmail = req.body.email;
+    const area = req.body.area;
+    const nickname = req.body.nickname;
+    const sex = req.body.sex;
+    const age = req.body.age
+    const type = req.body.type
+    usersQuery.getCheckNickname(nickname)
+      .then((data) => {
+          const registerStatus = data[0].length
+          let validation = [];
+         
+          for(let key in req.body) {
+            if(req.body[key] === ''){
+              validation.push(key)
+            }
+          }
+  
+          if(validation.length === 0 ) {
+              if(registerStatus !== 0){
+                res.status(200).json({message : "Already register Nickname"})
+              }else{
+                usersQuery.updateUserInfo(SnsEmail,area,nickname,sex,age)
+                          .then(()=> {
+                            res.status(200).json({
+                                message : "Sign up Completed"
+                            })
+                          })             
+                          .catch(() =>{res.status(401).json({message : "Sign up Fail"})})
+                              }
+          }
+      })
+}
   deleteUser(req,res){
     const email = req.body.email
     const password = req.body.password
@@ -160,6 +191,29 @@ module.exports = class Member {
                 }
               })
               
+  }
+  deleteSnsUser(req,res){
+    const email = req.body.email
+    usersQuery.deleteUser(email)
+    res.status(200).json({message : 'Delete Sns User'})
+  }
+  getSnsMember(req,res) {
+    const email = req.query.email
+    usersQuery.findUserInfo(email)
+              .then((data)=>{
+                const SnsMemberInfo = {
+                  Nickname : data[0][0].Nickname,
+                  Sex : data[0][0].Sex,
+                  Age : data[0][0].Age,
+                  Area : data[0][0].Area
+                }
+              
+                res.status(200).json(SnsMemberInfo)
+              })
+              .catch(()=>{
+                res.status(401).json({message : "error"})
+              })
+    
   }
 
 }
