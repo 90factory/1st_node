@@ -63,8 +63,7 @@ import { eventBus } from './main.js'
          
           Search.fetch(this.keyward)
                 .then(res => {
-                   eventBus.$emit("SearchedPetitions",res)
-                      
+                   eventBus.$emit("SearchedPetitions",res)   
                 })
               
           this.$router.push({path : '/searchresult'})

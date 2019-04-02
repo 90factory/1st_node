@@ -43,9 +43,9 @@
 
             <slot name="footer">
               <span class="black--text"><b><v-btn @click="close">종료하기</v-btn></b></span>
-              <router-link to="/"><span class="black--text"><b><v-btn @click="recommend">공감하기</v-btn></b></span></router-link>
+              <span class="black--text"><b><v-btn @click="recommend">공감하기</v-btn></b></span>
               <router-link :to="{name : 'chatting', query : {title : this.$route.query.title}}"><span class="black--text"><b><v-btn>대화방 참여</v-btn></b></span></router-link> 
-              <a v-bind:href="this.$route.query.link"><span class="black--text"><b><v-btn>원문 보기</v-btn></b></span></a> 
+              <a><span class="black--text"><b><v-btn @click="openNewTab">원문 보기</v-btn></b></span></a> 
             </slot>
           </div>
 
@@ -183,6 +183,9 @@ export default {
           }
           
         },
+        openNewTab() {
+          window.open(this.$route.query.link,"_blank");
+        },
         addHistory(){
           
           const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
@@ -192,6 +195,16 @@ export default {
         recommend(){
           const ID = this.$route.query.link.substring(39,this.$route.query.link.length)
           Petitions.postRecommend(ID)
+                   .then((res) => {
+                    
+                      if(res.data.message === 'Already Recommend') {
+                          alert('이미 공감하신 청원 입니다.')
+                          router.back(-1)
+                      }
+                      else{
+                        router.back(-1)
+                      }
+                   })
         }      
     },
     watch: {

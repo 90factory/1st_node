@@ -67,9 +67,10 @@ module.exports = class users {
     }
 
     static deleteUser(email){
+    
         const insert = 'DELETE FROM test123.users WHERE Email in (?)';
         const values = [String(email)];
-        db.execute(insert,values); 
+        return db.execute(insert,values); 
     }
 
     static addHistory(email,petitionID){
@@ -85,6 +86,8 @@ module.exports = class users {
     }
 
     static postRecommend(email,petitionID) {
+        console.log(email)
+        console.log(petitionID)
         const insert = 'INSERT INTO test123.history(HistoryID,Email,DocumentID,ReadingPageTime,VotingStatus) VALUES(?,?,?,NOW(),?)'
         const values = [null,String(email),Number(petitionID),Number(1)]
         return db.execute(insert,values);

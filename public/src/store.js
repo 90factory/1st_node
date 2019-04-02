@@ -26,7 +26,8 @@ export default new Vuex.Store({
       state.isLogin = false
       state.isSnsMember = false
       state.isLoginError = false
-      state.userInfo = null   
+      state.userInfo = null
+      axios.defaults.headers.common['Authorization'] = null;   
     }
   
   },
@@ -94,6 +95,7 @@ export default new Vuex.Store({
       commit("loginError")
     },
     logout({commit}){
+
         sessionStorage.removeItem('access-token')
         sessionStorage.removeItem('refresh-token')
         sessionStorage.removeItem('email')
@@ -102,8 +104,13 @@ export default new Vuex.Store({
         sessionStorage.removeItem('Area')
         sessionStorage.removeItem('Age')
         sessionStorage.removeItem('type')
+
+     
+        sessionStorage.clear();
+
         commit("logout")
         router.push({name : 'home'})
+        
     }
   }   
 })
