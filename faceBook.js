@@ -6,7 +6,7 @@ const usersQuery = require('./model/usersQuery');
 module.exports = new FacebookStrategy ({
     clientID: '2095342310556010',
     clientSecret: '4889e2a6f5f1152326329af934a7fd30',
-    callbackURL: "http://192.168.1.8:3000/facebook/auth",
+    callbackURL: "https://192.168.1.8:8080/facebook/auth",
     passReqToCallback: true,
     profileFields: ['id', 'emails', 'name']
 },
