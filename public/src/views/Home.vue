@@ -4,12 +4,12 @@
         <v-flex xs12 sm6>
             <ul>
                 <div>
-                  <v-card>
-                    <h1>청원수 Top 5</h1>
-                  
-                    <v-content  v-for="(p, index) in Top5petitions" :key="index">
+                  <v-card width=700 height=300>
+                 
+                    <v-toolbar-title class="toolbar-title">청원수 Top 5</v-toolbar-title>
+                    <span  v-for="(p, index) in Top5petitions" :key="index" class="petition">
                      <router-link :to="{ name : 'detail', query: {title : p.제목,link : p.링크, count : p.참여인원, id : p.번호, isHome : true}}"><span  @click="openModal" class="black--text">{{index+1}}. {{p["제목"]}}</span></router-link>
-                    </v-content>
+                    </span>
                   </v-card>
                 </div>
             </ul>
@@ -17,12 +17,15 @@
             <v-card>
               <router-view v-if="showModal"></router-view>
             </v-card>
+            
         </v-flex>
-        <v-flex xs12 sm6>
-          <v-card width=600 height=365 >
+        <v-flex xs12 sm6 >
+          <v-card width=700 height=300 >
+            <v-toolbar-title class="toolbar-title">항목별 청원</v-toolbar-title>
               <GChart
+                
                   v-if="!isEmpty"
-                  type="ColumnChart"
+                  type="LineChart"
                   :data="chartData"
                   :options="chartOptions"
               />
@@ -64,8 +67,18 @@
                     ],
                     chartOptions : {
                         title : '카테고리별 청원',
-                        width: 600,
-                        height: 240
+                        width: 700,
+                        height: 240,
+                        fontSize:9,
+                        animation: { 
+                                    startup: true,
+                                    duration: 1000,
+                                    easing: 'linear' },
+                        
+
+
+
+                     
                     }
 
       }
@@ -129,5 +142,14 @@
 <style>
 a{
   color : black;
+}
+.petition{
+    display:block;
+    margin-bottom: 30px;
+    margin-left:15px;
+}
+.toolbar-title{
+  text-align: center;
+  margin-bottom: 30px;
 }
 </style>
