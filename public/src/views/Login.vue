@@ -49,7 +49,7 @@
                     </div>
                      <div class="pa-3" v-if="!show">
                        
-                        <a href="http://192.168.1.8:3000/facebook">
+                        <a href="https://192.168.1.8:3000/facebook">
                           <v-img :src="`https://scontent-hkg3-2.xx.fbcdn.net/v/t39.2365-6/17639236_1785253958471956_282550797298827264_n.png?_nc_cat=105&_nc_ht=scontent-hkg3-2.xx&oh=11d8beb63a1e1841f638267df09e3927&oe=5D02CFEA`">
                           </v-img>
                         </a>

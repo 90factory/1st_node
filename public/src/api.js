@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 //const DOMAIN = '/api'
-//const DOMAIN = 'http://localhost:3000'
-const DOMAIN = 'http://192.168.1.8:3000'
+//const DOMAIN = 'https://localhost:3000'
+const DOMAIN = 'https://192.168.1.8:3000'
+
 const api = (method, url, data) => {
     return axios({
         method,
