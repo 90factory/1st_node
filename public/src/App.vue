@@ -24,7 +24,7 @@
                     </v-text-field>
                  </v-flex>
                      <v-btn flat @click.prevent="searchEvent">검색</v-btn>
-      <v-toolbar-title><b>꺼청닷컴</b></v-toolbar-title>
+      <v-toolbar-title>꺼청닷컴</v-toolbar-title>
     </v-toolbar>
     
     
@@ -98,5 +98,5 @@ import { eventBus } from './main.js'
   }
 </script>
 <style>
-
+  
 </style>

@@ -31,7 +31,7 @@
 
              <GChart
                 v-if="!isEmpty"
-                type="PieChart"
+                type="BarChart"
                 :data="AreaData"
                 :options="AreaOptions"
             />
@@ -104,13 +104,26 @@ export default {
                       ['제주도',0]
                     ],
                     AgeOptions : {
-                        title : '연령별 분포'
+                        title : '연령별 분포',
+                         animation: { 
+                                    startup: true,
+                                    duration: 1000,
+                                    easing: 'linear' }
                     },
                     SexOptions : {
-                        title : '성별 분포'
+                        title : '성별 분포',
+                         animation: { 
+                                    startup: true,
+                                    duration: 1000,
+                                    easing: 'linear' }
                     },
                     AreaOptions : {
-                         title : '지역별 분포'
+                         title : '지역별 분포',
+                          width : 600,
+                          animation: { 
+                                    startup: true,
+                                    duration: 1000,
+                                    easing: 'linear' }
                         
                     },
                     message : ''
