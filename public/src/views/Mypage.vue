@@ -15,7 +15,7 @@
                     </v-toolbar-title>
                     </v-toolbar>
                     <div class="pa-3" v-if="reviseshow">
-                    
+
                     <v-text-field
                     label="닉네임"
                     v-model="nickname"

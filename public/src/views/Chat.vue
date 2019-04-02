@@ -4,8 +4,10 @@
              <v-flex xs12 sm6 offset-sm3>
                 <div id="messages">
                     <div v-for="(msg, index) in messages" :key="index">
-                        <div class="font-weight-bold"><v-card><v-card-title>{{ msg.user }}:{{ msg.message }}</v-card-title></v-card></div>
+                        <div v-if="msg.user != null"><v-card><v-card-title>{{ msg.user }} : {{ msg.message }}</v-card-title></v-card></div>
+                        <div class="font-weight-bold" v-if="msg.alertmessage != null"><v-card><v-card-title class>{{ msg.alertmessage }}</v-card-title></v-card></div>
                     </div>
+                  
                 </div>
              </v-flex>   
             <v-flex>
@@ -27,7 +29,7 @@
 </template>
 <script>
 import io from 'socket.io-client'
-
+//http://192.168.1.8
 
 export default {
     data () {
@@ -51,7 +53,10 @@ export default {
             this.message = ''
         },
         leave () {
-            this.socket.emit('leaveRoom',this.$route.query.title)
+            this.socket.emit('leaveRoom',{
+                name : this.$route.query.title,
+                nickname : sessionStorage.getItem('Nickname')
+            })
             this.$router.replace({path : '/'})
         },
         onScroll (e) {
@@ -67,7 +72,10 @@ export default {
              let objDiv = document.getElementById("messages");
         objDiv.scrollTop = objDiv.scrollHeight;
         })
-        this.socket.emit('joinRoom', this.$route.query.title) 
+        this.socket.emit('joinRoom', {
+            name : this.$route.query.title,
+            nickname : sessionStorage.getItem('Nickname')
+            }) 
 
     }
 }
@@ -81,4 +89,5 @@ export default {
         overflow-x: hidden;
         overflow-y:auto;
     }
+  
 </style>
