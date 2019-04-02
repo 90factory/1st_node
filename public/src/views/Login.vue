@@ -18,7 +18,6 @@
                 로그인이 완료되었습니다.
                 </v-alert>
 
-
                 <v-card>
                     <v-toolbar flat>
                     <v-toolbar-title><v-btn flat large @click="changeDisplay"><b>일반로그인</b></v-btn><v-btn flat large @click="changeDisplay"><b>소셜 로그인</b></v-btn></v-toolbar-title>
@@ -46,10 +45,14 @@
                     })"
                     >로그인
                     </v-btn>
+                  
                     </div>
                      <div class="pa-3" v-if="!show">
-                      <v-btn large>네이버 로그인</v-btn>
-                      <v-btn large>페이스북 로그인</v-btn>
+                       
+                        <a href="http://localhost:3000/facebook">
+                          <v-img :src="`https://scontent-hkg3-2.xx.fbcdn.net/v/t39.2365-6/17639236_1785253958471956_282550797298827264_n.png?_nc_cat=105&_nc_ht=scontent-hkg3-2.xx&oh=11d8beb63a1e1841f638267df09e3927&oe=5D02CFEA`">
+                          </v-img>
+                        </a>
                      </div>
                 </v-card>
             </v-flex>
@@ -59,26 +62,33 @@
 
 <script>
 import {mapState,mapActions} from 'vuex'
+
 export default {
   
   data () {
         return { 
         email : null,
         password: null,
-        show : true,
+        show : true, 
+        token : '',
+        name : '',
+        personalID : '',
+        isConnected : false,
         }
   },
-  
   computed: {
     ...mapState(['isLogin','isLoginError'])
   },
   
   methods : {
     ...mapActions(['login']),
+    ...mapActions(['loginSNS']),
     changeDisplay () {
             this.show = !this.show
     }
+   
 
-  }
+  },
+ 
 }
 </script>

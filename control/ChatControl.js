@@ -31,6 +31,7 @@ socketApi.createServer = ()=>{
         socket.on('chat message', (msg) => {
             io.to(msg.roomname).emit('chat message', msg);
         });
+      
     })
     
 }
