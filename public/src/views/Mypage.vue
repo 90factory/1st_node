@@ -22,6 +22,7 @@
                     type="nickname"
                     >
                     </v-text-field>
+            
                     <v-select
                     :items="Sexitems"
                     v-model="Sex"
@@ -288,4 +289,5 @@ export default {
         justify-content: center;
         width:100%;
     }
+    
 </style>

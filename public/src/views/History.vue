@@ -1,18 +1,21 @@
 <template>
-    <v-container>
+    <v-container fluid grid-list-md>
         <v-layout>
-            <v-flex>
-                <h1>최근 읽은 게시물</h1>
-                
-                <v-list v-for="(result,index) in data[0]" :key="index">
-                    <router-link :to="{ name : 'historyresult', query: {title : data[0][index].제목,link : data[0][index].링크, count : data[0][index].참여인원, id : data[0][index].번호, isHistory : true}}">
-                      <span  @click="openModal" class="black--text">{{data[0][index].제목}}</span>
-                    </router-link>
-                </v-list>
+                <v-flex xs12 sm6 md4 lg3 xl2>
+                    <v-card class="justify-center" width="1800" height="800" xs12 sm6 md4 lg3 xl2>
+                        <v-toolbar-title class="toolbar-title">최근 조회한 게시물</v-toolbar-title>
+                        <span v-for="(result,index) in data[0]" :key="index"  class="history">
+                        <router-link :to="{ name : 'historyresult', query: {title : data[0][index].제목,link : data[0][index].링크, count : data[0][index].참여인원, id : data[0][index].번호, isHistory : true}}">
+                        <span  @click="openModal" class="black--text">{{data[0][index].제목}}</span>
+                        </router-link>
+                        </span>
+                    </v-card>
+                </v-flex>
+
                 <v-card>
                     <router-view v-if="showModal"></router-view>
                 </v-card>
-            </v-flex>
+           
         </v-layout>
     </v-container>
 </template>
@@ -51,3 +54,11 @@ export default {
     
 }
 </script>
+<style>
+    .history{
+        display:block;
+        margin-bottom: 30px;
+        margin-left:30px;
+    }
+   
+</style>
