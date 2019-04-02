@@ -7,13 +7,22 @@ const passport = require('passport');
 const jwtstrategy = require('./jwt');
 const facebookstrategy = require('./faceBook');
 const routes = require('./routes/router');
-const server = app.listen(3000);
 const socketApi = require('./control/ChatControl');
 const io = socketApi.io
 const session = require('express-session')
-
+const https = require('https')
+const fs = require('fs');
+//const server = app.listen(3000);
 passport.use(jwtstrategy);
 passport.use(facebookstrategy);
+
+const options = {
+	key: fs.readFileSync('./keys/private.pem'),
+	cert: fs.readFileSync('./keys/public.pem')
+};
+const server = https.createServer(options, app).listen(3000, function() {
+  console.log("HTTPS server listening on port " + 3000);
+});
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
