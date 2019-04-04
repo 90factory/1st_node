@@ -14,6 +14,7 @@
     "greenlock-express": "^2.6.9",
     "jsonwebtoken": "^8.5.0",
     "le-acme-core": "^2.1.4",
+    "mecab-ya": "^0.1.1",
     "mysql2": "^1.6.5",
     "node-openssl-cert": "0.0.47",
     "passport": "^0.4.0",
