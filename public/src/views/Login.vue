@@ -36,7 +36,7 @@
                     </v-text-field>
                     <v-btn 
                     color="primary"
-                    large
+                    large 
                     block
                     depressed
                     @click="login({

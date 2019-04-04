@@ -2,8 +2,8 @@ const SearchResult = require('../model/SearchResult')
 const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
-const Url = 'http://192.168.1.17:8000'
-//const Url = 'http://192.168.1.2:8000'
+//const Url = 'http://192.168.1.17:8000'
+const Url = 'http://192.168.1.3:8000'
  class DetailInfo {
     constructor(){
 
@@ -20,9 +20,8 @@ const Url = 'http://192.168.1.17:8000'
                 res.status(401).json({message : "Fail"})
             }
         })
-        //let data = [ ] 
-        //data.push(SearchResult)
-        //res.status(200).json(data)
+   
+        //res.status(200).json(SearchResult)
     }
     getSearch(req,res){
         request.get({
@@ -32,7 +31,7 @@ const Url = 'http://192.168.1.17:8000'
         }, (error,response, body)=>{
             const PetitionData = body
            
-            res.status(200).json([PetitionData])
+            res.status(200).json(PetitionData)
             if(error){
                 res.status(401).json({message : "Fail"})
             }

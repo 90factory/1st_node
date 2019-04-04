@@ -98,5 +98,8 @@ import { eventBus } from './main.js'
   }
 </script>
 <style>
-  
+  .v-toolbar,.v-btn,span,div{
+    font-family: 'Jua', sans-serif;
+    font-size: 18px;
+  }
 </style>
