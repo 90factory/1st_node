@@ -14,7 +14,6 @@ import VueCookies from 'vue-cookies'
 //  Vue.prototype.$http.defaults.headers.common['Authorization']  = 'Bearer ' +accessToken   
 //}
 
-
 Vue.use(VueCookies)
 
 export const eventBus = new Vue()
