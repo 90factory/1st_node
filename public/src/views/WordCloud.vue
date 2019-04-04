@@ -6,19 +6,49 @@
  
 <script>
 import Cloud from 'vue-d3-cloud'
- 
+import { Petitions } from '../api'
 export default {
     name: 'app',
     data() {
         return {
             words : [
-                { text: '폭행', value: 1000 },
-                { text: '정치', value: 200 },
-                { text: 'is', value: 800 },
-                { text: 'very cool', value: 1000000 },
-                { text: 'lunch', value: 100 },
+                
             ],
             fontSizeMapper: word => Math.log2(word.value) * 5,
+        }
+    },
+    created() {
+        this.getKeyword()
+    },
+    methods : {
+        getKeyword () {
+            Petitions.getKeyword()
+                     .then((res)=> {
+                         const data = res.data;
+                          let temp = []
+                         let count = 0;
+                        
+                         
+                       
+
+                        let reducer = function(accumulator, value, index, array) {
+                            if(accumulator.hasOwnProperty(value)) {
+                                accumulator[value] = accumulator[value] + 5;
+                            }else {
+                                accumulator[value] = 1 
+                            }
+                            return accumulator;
+                        }
+                        let initialValue = {};
+                        let result = data.reduce(reducer, initialValue);
+                        
+                        for(let key in result){
+                            this.words.push({text:key,value : result[key]})
+                        }
+
+                     })
+                     
+                  
         }
     },
     components: {

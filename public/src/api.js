@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 //const DOMAIN = '/api'
-const DOMAIN = 'https://localhost:3000'
-//const DOMAIN = 'https://192.168.1.9:3000'
+//const DOMAIN = 'https://localhost:3000'
+const DOMAIN = 'https://192.168.1.9:3000'
 
 const api = (method, url, data) => {
     return axios({
@@ -112,8 +112,10 @@ export const Petitions = {
             petitionID : petitionID,
             email : sessionStorage.getItem('email')
         })
+    },
+    getKeyword() {
+        return axios.get(DOMAIN+'/keyword')
     }
- 
 }
 
 export const Search = {

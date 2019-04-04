@@ -144,8 +144,16 @@ const Url = 'http://192.168.1.3:8000'
             json : true,
         }, (error,response, body)=>{
             const PetitionData = body
-          
-            res.status(200).json(PetitionData)
+            let data = ''
+            
+            PetitionData.forEach(petition => {
+                data = data.concat(petition['제목']) 
+            })
+            mecab.nouns(data,function(err,result){
+                
+                res.status(200).json(result)
+            })
+            
             if(error){
                 res.status(401).json({message : "Fail"})
             }

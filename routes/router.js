@@ -33,5 +33,5 @@ router.get('/refreshtoken',passport.authenticate('jwt',{session:false}),AuthCont
 router.post('/history',passport.authenticate('jwt',{session:false}),PetitionController.postHistory)
 router.get('/history',passport.authenticate('jwt',{session:false}),PetitionController.getHistory)
 router.post('/recommend',passport.authenticate('jwt',{session:false}),PetitionController.postRecommend)
-
+router.get('/keyword',PetitionController.getKeyword)
 module.exports = router;
