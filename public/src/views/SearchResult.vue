@@ -65,12 +65,12 @@ export default {
     methods: {
         searchKeyward() {
            this.result.forEach(data => {
-                for(let key in data){
+             
                 
                 
-                    if(data[key]["제목"].indexOf(this.keyward) !== -1){
-                        this.foundData.push(data[key])
-                    }
+                    if(data["제목"].indexOf(this.keyward) !== -1){
+                        this.foundData.push(data)
+                    
                
                 
             }
