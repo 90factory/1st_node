@@ -74,7 +74,7 @@ module.exports = class Auth {
     req.session.token = token;
     res.cookie('token',token)
     res.cookie('email',email)
-    res.redirect('https://192.168.1.9:8080');
+    res.redirect('https://192.168.1.5:8080');
   }
 
   

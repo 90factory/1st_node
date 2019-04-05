@@ -3,8 +3,8 @@ const usersQuery = require("../model/usersQuery");
 const request = require('request');
 const querystring = require('querystring');
 const mecab = require('mecab-ya');
-//const Url = 'http://192.168.1.17:8000'
-const Url = 'http://192.168.1.3:8000'
+const Url = 'http://192.168.1.17:8000'
+//const Url = 'http://192.168.1.3:8000'
  class DetailInfo {
     constructor(){
 

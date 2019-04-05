@@ -37,7 +37,7 @@ export default {
             user: sessionStorage.getItem('Nickname'),
             message : '',
             messages : [],
-            socket : io('https://192.168.1.9:3000',{transports : ['websocket']}),
+            socket : io('https://192.168.1.5:3000',{transports : ['websocket']}),
             height : '',
             offsetTop : 400
         }

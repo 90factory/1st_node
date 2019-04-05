@@ -35,7 +35,7 @@ export default {
                             if(accumulator.hasOwnProperty(value)) {
                                 accumulator[value] = accumulator[value] + 5;
                             }else {
-                                accumulator[value] = 1 
+                                accumulator[value] = 5
                             }
                             return accumulator;
                         }
@@ -48,7 +48,7 @@ export default {
 
                      })
                      
-                  
+                  console.log(this.words)
         }
     },
     components: {
@@ -56,3 +56,8 @@ export default {
     }}
 
 </script>
+<style>
+#app{
+    margin-bottom :150px;
+}
+</style>
