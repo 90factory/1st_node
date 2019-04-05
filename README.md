@@ -155,3 +155,11 @@ postRecommend
 - 클라이언트측에서 공감하기 버튼 클릭
 - 청원 ID와 사용자의 이메일이 서버로 전달
 - 서버에서는 history테이블에 VotingStatus값에 1을 넣어서 공감했음을 표시
+
+### Detabase architecture
+-----------------------------------------
+![database](https://user-images.githubusercontent.com/48472537/55614323-ac293180-57c7-11e9-8356-a136a6f4277b.png)
+
+- 2개의 테이블이 존재하고, 부모 테이블(users)과 자식 테이블(history) 
+- users table 에는 이메일, 비밀번호, 지역, 나이, 성별 데이터 저장
+- history table 에는 히스토리 아이디(인덱싱), 이메일, 문서식별자, 페이지 열람시간, 공감하기 유무 데이터를 저장
